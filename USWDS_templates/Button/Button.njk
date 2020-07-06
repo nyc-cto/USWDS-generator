@@ -1,0 +1,3 @@
+<button class="usa-button {{ classes | type('string') }}" disabled={{ disabled | type('bool') }} type={{ htmlType | type('string')}} onclick={{ onClick | type('func') | default(() => {}) }}>
+    {{ text | type('string') | required() }}
+</button>

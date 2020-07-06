@@ -25,7 +25,7 @@ It is not currently a goal of this project to generate "controlled" components, 
 ## Outputs:
  - An output folder containing one folder for each of the generated frameworks. The folder name should match the framework name, in lowercase.
  - Each framework folder should contain exactly one folder for each component. The folder name should match the component name, following the folder naming best practices for the framework, else use PascalCase.
- - Each component folder should contain exactly on file with an appropriate extension for that framework. The file name should match the exported component name, following the file naming best practices for the framework, else use PascalCase.
+ - Each component folder should contain exactly one file with an appropriate extension for that framework. The file name should match the exported component name, following the file naming best practices for the framework, else use PascalCase.
 
 ## Targets:
  1. Generate a single React stateless functional component from a single HTML template
