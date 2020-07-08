@@ -1,3 +1,5 @@
+const OUTPUT_PATH = "dist/react/";
+
 const nunjucks = require("nunjucks");
 const fs = require("fs");
 
@@ -21,7 +23,7 @@ const generator = (componentName, content, file) => {
     );
 
     // Write the output file to ./dist/react
-    fs.writeFile("dist/react/" + file, res, (err) => {
+    fs.writeFile(OUTPUT_PATH + file, res, (err) => {
       if (err) {
           return console.log(err)
       };
