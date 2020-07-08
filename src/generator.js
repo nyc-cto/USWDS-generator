@@ -2,6 +2,7 @@ const OUTPUT_PATH = "dist/react/";
 
 const nunjucks = require("nunjucks");
 const fs = require("fs");
+const path = require("path");
 
 /**
  * Generates a nunjucks template based on given parameters - Note: runs from root directory
@@ -22,8 +23,8 @@ const generator = (componentName, content, file) => {
         { componentName, content }
     );
 
-    // Write the output file to ./dist/react
-    fs.writeFile(OUTPUT_PATH + file, res, (err) => {
+    // Write the output file to the specified directory
+    fs.writeFile(path.join(OUTPUT_PATH, file), res, (err) => {
       if (err) {
           return console.log(err)
       };
