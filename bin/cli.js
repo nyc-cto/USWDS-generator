@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+#! /bin/cli.js
+//PLACE -- AFTER SCRIPT NAME FOR ARGUMENTS IF USING "npm run uswds-gen"
 
 const { program } = require("commander");
 program.version("0.0.1");
