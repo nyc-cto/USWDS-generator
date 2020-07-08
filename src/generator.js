@@ -15,7 +15,7 @@ const generator = (componentName, content, file) => {
 
     // React template is located in ./templates
     nunjucks.configure("templates");
-    var res = nunjucks.render(
+    const res = nunjucks.render(
         "react.njk",
         { componentName, content }
     );
