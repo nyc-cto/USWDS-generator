@@ -1,0 +1,29 @@
+{
+  "name": "uswds-generator",
+  "version": "1.0.0",
+  "bin": {
+    "uswds-gen": "./bin/cli.js"
+  },
+  "description": "A CLI to automatically generate framework components from the US Web Design System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "uswds-gen": "node bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyc-cto/USWDS-generator.git"
+  },
+  "authors": [
+    "John Stendardo",
+    "Lamarr Baker"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nyc-cto/USWDS-generator/issues"
+  },
+  "homepage": "https://github.com/nyc-cto/USWDS-generator#readme",
+  "dependencies": {
+    "commander": "^5.1.0"
+  }
+}
