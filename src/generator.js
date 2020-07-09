@@ -8,7 +8,7 @@ const path = require("path");
  * Generates a nunjucks template based on given parameters - Note: runs from root directory
  * @param {String} componentName The name of the react component
  * @param {String} content The content of the render return
- * @param {String} file The name of the output file
+ * @param {String} file The name of the output file (.jsx)
  */
 const generator = (componentName, content, file) => {
     // Check if any parameters are not of type string
@@ -32,7 +32,7 @@ const generator = (componentName, content, file) => {
 }
 
 // Example usage:
-// generator("Button", '<button type="submit">Alert</button>', "output.njk");
+// generator("Button", '<button type="submit">Alert</button>', "output.jsx");
 
 module.exports = {
     generator
