@@ -1,7 +1,9 @@
 //PLACE -- AFTER SCRIPT NAME FOR ARGUMENTS IF USING "npm run uswds-gen"
 
+var genFile = require("../src/generator");
 const { program } = require("commander");
-program.version("0.0.1");
+const fs = require("fs");
+program.version("0.1");
 
 program
   .option("-i, --input <path>", "specified path of input file")
@@ -19,11 +21,21 @@ try {
   if (!program.output) {
     throw "An output file name must be specified!";
   }
-  if (program.input) {
+  if (program.input && program.output) {
     console.log("Path to input file is ", program.input);
-  }
-  if (program.output) {
     console.log("Name of output file is ", program.output);
+    //read file in the path given
+    fs.readFile(program.input, (err, data) => {
+      if (err) {
+        throw err;
+      }
+      //convert to string
+      data = data.toString();
+      //store component name
+      var componentName = data.substring(0, data.indexOf(" "));
+      var content = data.substring(data.indexOf(" ")); //store jsx content
+      genFile.generator(componentName, content, program.output + ".jsx"); //pass these to the generator function
+    });
   }
   if (!program.framework) {
     console.log("Specified framework is React");
