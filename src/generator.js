@@ -24,13 +24,22 @@ const generator = (componentName, content, file) => {
   nunjucks.configure("templates");
   const res = nunjucks.render("react.njk", { componentName, content });
 
+  //Remove nunjucts santax in react component
+  let rez = res
+  let clearEnd =rez.replace(/\{%.*end.*}/gm, "}")// clears all {%...end...%}
+  let cleanIf = clearEnd.replace(/\{%.* if \(/gm, "if (")//capture {%...if( and replace with if(
+  let cleaseIfMore = cleanIf.replace(/\) %\}/gm, " ) {")//clears ending of if tag ) %}
+  let cleanInnerIf = cleaseIfMore.replace(/\) [^and].*%\}/gm, ") {")//clears nested if statement (only if (... and ...) right now)
+  
+  //console.log("Clean Nunjucks:  "+cleanInnerIf)//test 
+
   //create framework directory
   fs.mkdir("react", { recursive: true }, (err) => {
     if (err) throw err;
   });
 
   // Write the output file to the specified directory
-  fs.writeFile(path.join(OUTPUT_PATH, file), res, (err) => {
+  fs.writeFile(path.join(OUTPUT_PATH, file), cleanInnerIf, (err) => {
     if (err) {
       return console.log(err);
     }
