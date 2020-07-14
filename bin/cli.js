@@ -5,6 +5,7 @@ const COMPS_PATH = "/home/john/Apps/uswds/src/components/";
 const genFile = require("../src/generator");
 const { program } = require("commander");
 const fs = require("fs");
+const path = require("path");
 program.version("0.1");
 
 program
@@ -26,53 +27,54 @@ try {
   if (program.input && program.output) {
     console.log("Path to input file is ", COMPS_PATH + program.input);
     console.log("Name of output file is ", program.output);
-    //get names of all files in directory
+
+    // Get names of all files in directory
     fs.readdir(
-      COMPS_PATH + program.input,
+      path.join(COMPS_PATH, program.input),
       { withFileTypes: true },
       (err, files) => {
         if (err) {
           throw err;
         }
         console.log(files);
-        for (let i = 0; i < files.length; i++) {
-          //if a file in the directory ends in .njk
-          if (
-            files[i].name.substring(files[i].name.lastIndexOf(".")) === ".njk"
-          ) {
-            //read file in the path given
+
+        files.forEach((file) => {
+          // If a file in the directory ends in .njk
+          if (file.name.substring(file.name.lastIndexOf(".")) === ".njk") {
+            // Read file in the path given
             fs.readFile(
-              COMPS_PATH + program.input + "/" + files[i].name,
+              path.join(COMPS_PATH, program.input, "/", file.name),
               (err, data) => {
                 if (err) {
                   throw err;
                 }
-                //the name of the file is the name of the component
+
+                // The name of the file is the name of the component
                 let componentName =
-                  files[i].name.charAt(0).toUpperCase() +
-                  files[i].name.substring(1, files[i].name.lastIndexOf("."));
-                //camelCase the component if need be
+                  file.name.charAt(0).toUpperCase() +
+                  file.name.substring(1, file.name.lastIndexOf("."));
+
+                // camelCase the component if need be
                 if (componentName.includes("-")) {
                   const sub = componentName.substring(
                     componentName.lastIndexOf("-")
                   );
-                  const rpl = sub.charAt(1).toUpperCase() + sub.substr(2);
+                  const rpl = sub.charAt(1).toUpperCase() + sub.substring(2);
                   console.log("sub is ", sub);
                   console.log("rpl is ", rpl);
                   componentName = componentName.replace(sub, rpl);
                 }
-                //console.log(componentName);
-                const content = data.toString();
+
+                const content = String(data);
                 genFile.generator(
                   componentName,
                   content,
-                  files[i].name.substring(0, files[i].name.lastIndexOf(".")) +
-                    ".jsx"
+                  `${file.name.substring(0, file.name.lastIndexOf("."))}.jsx`
                 );
               }
             );
           }
-        }
+        });
       }
     );
     // fs.readFile(COMPS_PATH + program.input, (err, data) => {
