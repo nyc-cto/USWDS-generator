@@ -3,7 +3,6 @@
 var genFile = require("../src/generator");
 const { program } = require("commander");
 const fs = require("fs");
-const process = require("process");
 program.version("0.1");
 
 program
