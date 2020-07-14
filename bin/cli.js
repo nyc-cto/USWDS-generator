@@ -49,19 +49,20 @@ try {
                   throw err;
                 }
 
-                // The name of the file is the name of the component
+                // The name of the component is the name of the file
                 let componentName =
-                  file.name.charAt(0).toUpperCase() +
-                  file.name.substring(1, file.name.lastIndexOf("."));
+                  file.name.charAt(0).toUpperCase() +//uppercase the first letter of the file name
+                  file.name.substring(1, file.name.lastIndexOf("."));//and then add the rest of the file name up until the '.'
 
-                // camelCase the component if need be
-                if (componentName.includes("-")) {
-                  const sub = componentName.substring(
+                // PascalCase the component name if need be
+                if (componentName.includes("-")) {//if the name of the file includes a '-'
+                  const sub = componentName.substring(//store a substring starting from '-' up until the end of the file name
                     componentName.lastIndexOf("-")
-                  );
-                  const rpl = sub.charAt(1).toUpperCase() + sub.substring(2);
+                  );//then uppercase the letter right after the '-' and add along the rest of the characters
+                  const rpl = sub.charAt(1).toUpperCase() + sub.substring(2);//then store that in another variable
                   console.log("sub is ", sub);
                   console.log("rpl is ", rpl);
+                  //then use the replace method to replace the string with the hyphen with the one without the hyphen and store it
                   componentName = componentName.replace(sub, rpl);
                 }
 
