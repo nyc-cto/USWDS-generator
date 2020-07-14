@@ -24,19 +24,23 @@ const generator = (componentName, content, file) => {
   nunjucks.configure("templates");
   const res = nunjucks.render("react.njk", { componentName, content });
 
-  //Remove nunjucts santax in react component
-  //nunjucks 'if' syntax cleanse
-  let rez = res
-  let clearEnd =rez.replace(/(\{%.end.*})|(\{%..end.*})/gm, "}")// clears all {%...end...%}
-  let cleanIf = clearEnd.replace(/\{%.* if[^a-z]\(|\{%.* if[^a-z]|\{%\n..if/gm, "if (")//capture {%...if( and replace with if(
-  let cleanIfMore = cleanIf.replace(/\) %\}/gm, " ) {")//clears ending of if tag ) %}
-  let cleanInnerIf = cleanIfMore.replace(/\) [^and].*%\}/gm, ") {")//clears nested if statement (only if (... and ...) right now)
-  
+  //Remove nunjucts santax in react component by chaining replace regular expressions
+  const cleanResult = res
+    // Clears all {%...end...%}
+    .replace(/(\{%.end.*})|(\{%..end.*})/gm, "}")
 
-  //nunjucks 'for' syntax cleanse
-  let cleanFor=cleanInnerIf.replace(/{% for/gm,"for (")
-  let cleanForEnd=cleanFor.replace(/%}/gm,") {") 
-  //console.log("Clean Nunjucks:  "+cleanInnerIf)//test 
+    // Capture {%...if( and replace with if(
+    .replace(/\{%.* if[^a-z]\(|\{%.* if[^a-z]|\{%\n..if/gm, "if (")
+
+    //clears ending of if tag ) %}
+    .replace(/\) %\}/gm, " ) {")
+
+    //clears nested if statement (only if (... and ...) right now)
+    .replace(/\) [^and].*%\}/gm, ") {")
+
+    // Nunjucks 'for' syntax cleanse
+    .replace(/{% for/gm, "for (")
+    .replace(/%}/gm, ") {");
 
   //create framework directory
   fs.mkdir("react", { recursive: true }, (err) => {
@@ -44,7 +48,7 @@ const generator = (componentName, content, file) => {
   });
 
   // Write the output file to the specified directory
-  fs.writeFile(path.join(OUTPUT_PATH, file), cleanForEnd, (err) => {
+  fs.writeFile(path.join(OUTPUT_PATH, file), cleanResult, (err) => {
     if (err) {
       return console.log(err);
     }
