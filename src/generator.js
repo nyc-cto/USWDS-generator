@@ -25,12 +25,17 @@ const generator = (componentName, content, file) => {
   const res = nunjucks.render("react.njk", { componentName, content });
 
   //Remove nunjucts santax in react component
+  //nunjucks 'if' syntax cleanse
   let rez = res
-  let clearEnd =rez.replace(/\{%.*end.*}/gm, "}")// clears all {%...end...%}
-  let cleanIf = clearEnd.replace(/\{%.* if \(/gm, "if (")//capture {%...if( and replace with if(
-  let cleaseIfMore = cleanIf.replace(/\) %\}/gm, " ) {")//clears ending of if tag ) %}
-  let cleanInnerIf = cleaseIfMore.replace(/\) [^and].*%\}/gm, ") {")//clears nested if statement (only if (... and ...) right now)
+  let clearEnd =rez.replace(/(\{%.end.*})|(\{%..end.*})/gm, "}")// clears all {%...end...%}
+  let cleanIf = clearEnd.replace(/\{%.* if[^a-z]\(|\{%.* if[^a-z]|\{%\n..if/gm, "if (")//capture {%...if( and replace with if(
+  let cleanIfMore = cleanIf.replace(/\) %\}/gm, " ) {")//clears ending of if tag ) %}
+  let cleanInnerIf = cleanIfMore.replace(/\) [^and].*%\}/gm, ") {")//clears nested if statement (only if (... and ...) right now)
   
+
+  //nunjucks 'for' syntax cleanse
+  let cleanFor=cleanInnerIf.replace(/{% for/gm,"for (")
+  let cleanForEnd=cleanFor.replace(/%}/gm,") {") 
   //console.log("Clean Nunjucks:  "+cleanInnerIf)//test 
 
   //create framework directory
@@ -39,7 +44,7 @@ const generator = (componentName, content, file) => {
   });
 
   // Write the output file to the specified directory
-  fs.writeFile(path.join(OUTPUT_PATH, file), cleanInnerIf, (err) => {
+  fs.writeFile(path.join(OUTPUT_PATH, file), cleanForEnd, (err) => {
     if (err) {
       return console.log(err);
     }
