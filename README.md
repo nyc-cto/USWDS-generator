@@ -26,12 +26,6 @@ This command line interface will(when complete) generate components of a particu
 
 ## Running the CLI
 
-Currently we are aiming for 3 ways to pass args to the CLI
-
-- npx run
-- bin/uswds-gen
-- npm run
-
-We only have npm run at the moment, and as of NodeJS Version 2.0.0 it is possible to pass custom arguments into your script that you specified in _scripts_ in _package.json_ using **--** Below is an example of how you would pass args to the CLI:
+We have a script you can call with npm run, and as of NodeJS Version 2.0.0 it is possible to pass custom arguments into your script that you specified in _scripts_ in _package.json_ using **--** Below is an example of how you would pass args to the CLI:
 
 **Example call:** npm run uswds-gen -- -i 01-type -o outFileName -f Vue
