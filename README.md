@@ -18,10 +18,11 @@ This command line interface will(when complete) generate components of a particu
 
 1. Clone the repo onto your machine with this command: `git clone https://github.com/nyc-cto/USWDS-generator.git` "optional argument to name your directory"
 2. Change directory to the git repo: `cd USWDS-generator` or replace USWDS-generator with whatever you named it if you did.
-3. Run `npm run uswds-gen -- -V` to check your version.
-4. If your version is 0.1 or less, the functionality to create .jsx from the USWDS _components_ directory isn't yet available, it will be soon.
-5. Otherwise if you have version 0.2 you can try an example call like the one at the bottom of this readme, see if a _react_ folder gets created with .jsx files inside named the same as the .njk files from the USWDS _components_ directory.
-6. If it doesn't seem to work, you may need to edit the **COMPS_PATH** variable in _cli.js_ so it has access to your specific location of the original USWDS repo and its _src/components_ folder.
+3. Install any dependencies needed: `npm install`.
+4. Run `npm run uswds-gen -- -V` to check your version.
+5. If your version is 0.1 or less, the functionality to create .jsx from the USWDS _components_ directory isn't yet available, it will be soon.
+6. Otherwise if you have version 0.2 you can try an example call like the one at the bottom of this readme, see if a _react_ folder gets created with .jsx files inside named the same as the .njk files from the USWDS _components_ directory.
+7. If it doesn't seem to work, you may need to edit the **COMPS_PATH** variable in _cli.js_ so it has access to your specific location of the original USWDS repo and its _src/components_ folder.
 
 ## Running the CLI
 
