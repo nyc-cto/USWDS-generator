@@ -9,8 +9,9 @@
         "airbnb",
         "mocha",
         "eslint:recommended",
+        "plugin:mocha/recommended",
         "plugin:react/recommended"
-    },
+    ],
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
