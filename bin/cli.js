@@ -1,6 +1,5 @@
 //PLACE -- AFTER SCRIPT NAME FOR ARGUMENTS IF USING "npm run uswds-gen"
 //path to all USWDS components
-const COMPS_PATH = "/home/john/Apps/uswds/src/components/";
 
 const genFile = require("../src/generator");
 const { program } = require("commander");
@@ -25,12 +24,20 @@ try {
     throw "An output file name must be specified!";
   }
   if (program.input && program.output) {
-    console.log("Path to input file is ", COMPS_PATH + program.input);
+    // console.log("Path to input file is ", COMPS_PATH + program.input);
     console.log("Name of output file is ", program.output);
 
     // Get names of all files in directory
     fs.readdir(
-      path.join(COMPS_PATH, program.input),
+      path.join(
+        __dirname,
+        "..",
+        "..",
+        "uswds",
+        "src",
+        "components",
+        program.input
+      ),
       { withFileTypes: true },
       (err, files) => {
         if (err) {
@@ -43,7 +50,16 @@ try {
           if (file.name.substring(file.name.lastIndexOf(".")) === ".njk") {
             // Read file in the path given
             fs.readFile(
-              path.join(COMPS_PATH, program.input, "/", file.name),
+              path.join(
+                __dirname,
+                "..",
+                "..",
+                "uswds",
+                "src",
+                "components",
+                program.input,
+                file.name
+              ),
               (err, data) => {
                 if (err) {
                   throw err;
@@ -51,18 +67,26 @@ try {
 
                 // The name of the component is the name of the file
                 let componentName =
-                  file.name.charAt(0).toUpperCase() +//uppercase the first letter of the file name
-                  file.name.substring(1, file.name.lastIndexOf("."));//and then add the rest of the file name up until the '.'
+                  // Uppercase the first letter of the file name
+                  file.name.charAt(0).toUpperCase() +
+                  // And then add the rest of the file name up until the '.'
+                  file.name.substring(1, file.name.lastIndexOf("."));
 
-                // PascalCase the component name if need be
-                if (componentName.includes("-")) {//if the name of the file includes a '-'
-                  const sub = componentName.substring(//store a substring starting from '-' up until the end of the file name
+                /**
+                 * PascalCase the component name if need be
+                 * If the name of the file includes a '-', store a substring starting from '-' up until the end of the file name
+                 */
+                if (componentName.includes("-")) {
+                  const sub = componentName.substring(
                     componentName.lastIndexOf("-")
-                  );//then uppercase the letter right after the '-' and add along the rest of the characters
-                  const rpl = sub.charAt(1).toUpperCase() + sub.substring(2);//then store that in another variable
+                  );
+
+                  // Then uppercase the letter right after the '-' and add along the rest of the characters and store that in another variable
+                  const rpl = sub.charAt(1).toUpperCase() + sub.substring(2);
                   console.log("sub is ", sub);
                   console.log("rpl is ", rpl);
-                  //then use the replace method to replace the string with the hyphen with the one without the hyphen and store it
+
+                  // Then use the replace method to replace the string with the hyphen with the one without the hyphen and store it
                   componentName = componentName.replace(sub, rpl);
                 }
 

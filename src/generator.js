@@ -48,11 +48,15 @@ const generator = (componentName, content, file) => {
   });
 
   // Write the output file to the specified directory
-  fs.writeFile(path.join(OUTPUT_PATH, file), cleanResult, (err) => {
-    if (err) {
-      return console.log(err);
+  fs.writeFile(
+    path.join(__dirname, "..", "react", file),
+    cleanResult,
+    (err) => {
+      if (err) {
+        return console.log(err);
+      }
     }
-  });
+  );
 };
 
 // Example usage:
