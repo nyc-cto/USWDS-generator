@@ -7,7 +7,7 @@
   "description": "A CLI to automatically generate framework components from the US Web Design System",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "uswds-gen": "node bin/cli.js",
     "lint": "eslint . --ext .js --ext .jsx"
   },
@@ -31,11 +31,14 @@
     "uswds": "^2.8.0"
   },
   "devDependencies": {
-    "eslint": "^7.2.0",
+    "eslint": "^7.4.0",
     "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.21.2",
-    "eslint-plugin-jsx-a11y": "^6.3.0",
-    "eslint-plugin-react": "^7.20.0",
-    "eslint-plugin-react-hooks": "^4.0.0"
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "eslint-plugin-mocha": "^7.0.1",
+    "mocha": "^8.0.1",
+    "nunjucks": "^3.2.1"
   }
 }
