@@ -12,6 +12,7 @@ describe('Array', function () {
   });
 });
 
-// to run your use 
+// to run mocha use: 
 // npm test 
+// to run esLint use:
 // npm run lint
