@@ -43,7 +43,7 @@ const generator = (componentName, content, file) => {
     .replace(/%}/gm, ") {");
 
   //create framework directory
-  fs.mkdir("react", { recursive: true }, (err) => {
+  fs.mkdir(OUTPUT_PATH, { recursive: true }, (err) => {
     if (err) throw err;
   });
 
