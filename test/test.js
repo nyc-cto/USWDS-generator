@@ -1,6 +1,4 @@
 /* eslint-env mocha */ 
-// eslint-disable-next-line spaced-comment
-/*eslint linebreak-style: ["error", "windows"] */
 
 let assert = require('assert');
 
@@ -12,7 +10,5 @@ describe('Array', function () {
   });
 });
 
-// to run mocha use: 
-// npm test 
-// to run esLint use:
-// npm run lint
+
+// to run mocha use: npm test 
