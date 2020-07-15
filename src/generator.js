@@ -1,4 +1,4 @@
-const OUTPUT_PATH = "react/";
+const OUTPUT_PATH = "react";
 
 const nunjucks = require("nunjucks");
 const fs = require("fs");
@@ -49,7 +49,7 @@ const generator = (componentName, content, file) => {
 
   // Write the output file to the specified directory
   fs.writeFile(
-    path.join(__dirname, "..", "react", file),
+    path.join(__dirname, "..", OUTPUT_PATH, file),
     cleanResult,
     (err) => {
       if (err) {
