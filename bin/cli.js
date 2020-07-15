@@ -33,7 +33,7 @@ try {
       path.join(
         __dirname,
         "..",
-        "..",
+        "node_modules",
         "uswds",
         "src",
         "components",
@@ -54,7 +54,7 @@ try {
               path.join(
                 __dirname,
                 "..",
-                "..",
+                "node_modules",
                 "uswds",
                 "src",
                 "components",
