@@ -5,7 +5,7 @@ function Button (props) {
     const { classes, disabled, htmlType, onclick, text } = props;
     return (
         <button
-            class={`usa-button ${classes}`}
+            className={`usa-button ${classes}`}
             disabled={disabled}
             type={htmlType}
             onClick={onclick}>
@@ -18,6 +18,7 @@ Button.propTypes = {
     classes: PropTypes.string,
     disabled: PropTypes.bool,
     htmlType: PropTypes.string,
+    onclick: PropTypes.func,
     onClick: PropTypes.func,
     text: PropTypes.string.isRequired
 }
