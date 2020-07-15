@@ -103,15 +103,6 @@ try {
         });
       }
     );
-    // fs.readFile(COMPS_PATH + program.input, (err, data) => {
-    //   if (err) {
-    //     throw err;
-    //   }
-    //   //store component name
-    //   const componentName = data.substring(0, data.lastIndexOf(" "));
-    //   const content = data.substring(data.lastIndexOf(" ")); //store jsx content
-    //   genFile.generator(componentName, content, program.output + ".jsx"); //pass these to the generator function
-    // });
   }
   if (!program.framework) {
     console.log("Specified framework is React");
