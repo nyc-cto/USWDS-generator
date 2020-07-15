@@ -6,9 +6,11 @@
         "node": true
     },
     "extends": [
+        "airbnb",
+        "mocha",
         "eslint:recommended",
         "plugin:react/recommended"
-    ],
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -17,7 +19,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "mocha"
     ],
     "rules": {
     },
