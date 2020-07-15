@@ -27,7 +27,8 @@
   "dependencies": {
     "commander": "^5.1.0",
     "nunjucks": "^3.2.1",
-    "react": "^16.13.1"
+    "react": "^16.13.1",
+    "uswds": "^2.8.0"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
