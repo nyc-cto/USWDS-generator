@@ -1,5 +1,4 @@
 //PLACE -- AFTER SCRIPT NAME FOR ARGUMENTS IF USING "npm run uswds-gen"
-//path to all USWDS components
 
 const genFile = require("../src/generator");
 const { program } = require("commander");
@@ -25,7 +24,6 @@ try {
     throw "An output file name must be specified!";
   }
   if (program.input && program.output) {
-    // console.log("Path to input file is ", COMPS_PATH + program.input);
     console.log("Name of output file is ", program.output);
 
     // Get names of all files in directory
