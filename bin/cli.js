@@ -5,6 +5,7 @@ const { program } = require("commander");
 const fs = require("fs");
 const path = require("path");
 const process = require("process");
+const config = require("./config");
 program.version("0.1");
 
 program
@@ -16,37 +17,16 @@ program
   );
 program.parse(process.argv);
 
-// CLI Framework argument defaults to React if not given
-const framework = program.framework ? program.framework : "React";
-
-// Store CLI arguments in a JSON Object
-const configuration = {
-  framework,
-  input: program.input,
-  output: program.output,
-};
+const configuration = config.configureAndValidate(program);
 
 try {
-  if (!configuration.input) {
-    throw "Input file path must be specified!";
-  }
-  if (!configuration.output) {
-    throw "An output file name must be specified!";
-  }
   if (configuration.input && configuration.output) {
+    console.log(`Input path is ${configuration.fullPath}`);
     console.log("Name of output file is ", configuration.output);
 
     // Get names of all files in directory
     fs.readdir(
-      path.join(
-        __dirname,
-        "..",
-        "node_modules",
-        "uswds",
-        "src",
-        "components",
-        configuration.input
-      ),
+      configuration.fullPath,
       { withFileTypes: true },
       (err, files) => {
         if (err) {
@@ -59,16 +39,7 @@ try {
           if (file.name.substring(file.name.lastIndexOf(".")) === ".njk") {
             // Read file in the path given
             fs.readFile(
-              path.join(
-                __dirname,
-                "..",
-                "node_modules",
-                "uswds",
-                "src",
-                "components",
-                configuration.input,
-                file.name
-              ),
+              path.join(configuration.fullPath, file.name),
               (err, data) => {
                 if (err) {
                   throw err;
