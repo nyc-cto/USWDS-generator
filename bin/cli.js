@@ -16,15 +16,25 @@ program
   );
 program.parse(process.argv);
 
+// CLI Framework argument defaults to React if not given
+const framework = program.framework ? program.framework : "React";
+
+// Store CLI arguments in a JSON Object
+const configuration = {
+  framework,
+  input: program.input,
+  output: program.output,
+};
+
 try {
-  if (!program.input) {
+  if (!configuration.input) {
     throw "Input file path must be specified!";
   }
-  if (!program.output) {
+  if (!configuration.output) {
     throw "An output file name must be specified!";
   }
-  if (program.input && program.output) {
-    console.log("Name of output file is ", program.output);
+  if (configuration.input && configuration.output) {
+    console.log("Name of output file is ", configuration.output);
 
     // Get names of all files in directory
     fs.readdir(
@@ -35,7 +45,7 @@ try {
         "uswds",
         "src",
         "components",
-        program.input
+        configuration.input
       ),
       { withFileTypes: true },
       (err, files) => {
@@ -56,7 +66,7 @@ try {
                 "uswds",
                 "src",
                 "components",
-                program.input,
+                configuration.input,
                 file.name
               ),
               (err, data) => {
@@ -102,11 +112,7 @@ try {
       }
     );
   }
-  if (!program.framework) {
-    console.log("Specified framework is React");
-  } else {
-    console.log("Specified framework is ", program.framework);
-  }
+  console.log("Specified framework is ", configuration.framework);
 } catch (e) {
   console.log(e);
 }
