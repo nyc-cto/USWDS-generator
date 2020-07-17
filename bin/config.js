@@ -17,7 +17,7 @@ const configure = (program) => {
   const framework = program.framework ? program.framework : "React";
 
   // Store the full path in a string
-  const fullPath = path.join(
+  const inputDirectoryPath = path.join(
     __dirname,
     "..",
     "node_modules",
@@ -30,9 +30,10 @@ const configure = (program) => {
   // Store CLI options in a JSON Object and return
   return {
     framework,
-    fullPath,
-    input: program.input,
-    output: program.output,
+    inputDirectoryPath,
+    verbose: program.verbose,
+    cliUserInput: program.input,
+    cliUserOutput: program.output,
   };
 };
 
@@ -41,10 +42,10 @@ const configure = (program) => {
  * @param {Object} configObject
  */
 const validate = (configObject) => {
-  if (!configObject.input) {
+  if (!configObject.cliUserInput) {
     throw "Input file path must be specified!";
   }
-  if (!configObject.output) {
+  if (!configObject.cliUserOutput) {
     throw "An output file name must be specified!";
   }
 
