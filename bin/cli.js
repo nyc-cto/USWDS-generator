@@ -5,6 +5,7 @@ const { program } = require("commander");
 const fs = require("fs");
 const path = require("path");
 const process = require("process");
+const config = require("./config");
 program.version("0.1");
 
 program
@@ -13,30 +14,21 @@ program
   .option(
     "-f, --framework <type>",
     "framework specified(should default to React) "
-  );
+  )
+  .option("-v, --verbose", "verbose mode logs configuration");
 program.parse(process.argv);
 
-try {
-  if (!program.input) {
-    throw "Input file path must be specified!";
-  }
-  if (!program.output) {
-    throw "An output file name must be specified!";
-  }
-  if (program.input && program.output) {
-    console.log("Name of output file is ", program.output);
+const configuration = config.configureAndValidate(program);
 
+if (configuration.verbose) {
+  console.log(configuration);
+}
+
+try {
+  if (configuration.cliUserInput && configuration.cliUserOutput) {
     // Get names of all files in directory
     fs.readdir(
-      path.join(
-        __dirname,
-        "..",
-        "node_modules",
-        "uswds",
-        "src",
-        "components",
-        program.input
-      ),
+      configuration.inputDirectoryPath,
       { withFileTypes: true },
       (err, files) => {
         if (err) {
@@ -49,16 +41,7 @@ try {
           if (file.name.substring(file.name.lastIndexOf(".")) === ".njk") {
             // Read file in the path given
             fs.readFile(
-              path.join(
-                __dirname,
-                "..",
-                "node_modules",
-                "uswds",
-                "src",
-                "components",
-                program.input,
-                file.name
-              ),
+              path.join(configuration.inputDirectoryPath, file.name),
               (err, data) => {
                 if (err) {
                   throw err;
@@ -101,11 +84,6 @@ try {
         });
       }
     );
-  }
-  if (!program.framework) {
-    console.log("Specified framework is React");
-  } else {
-    console.log("Specified framework is ", program.framework);
   }
 } catch (e) {
   console.log(e);
