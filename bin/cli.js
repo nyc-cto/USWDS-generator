@@ -25,7 +25,7 @@ if (configuration.verbose) {
 }
 
 try {
-  if (configuration.cliUserInput && configuration.cliUserOutput) {
+  if (configuration.cliUserOutput) {
     // Get names of all files in directory
     fs.readdir(
       configuration.inputDirectoryPath,
