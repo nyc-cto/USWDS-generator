@@ -1,8 +1,9 @@
 //PLACE -- AFTER SCRIPT NAME FOR ARGUMENTS IF USING "npm run uswds-gen"
 
-var genFile = require("../src/generator");
+const genFile = require("../src/generator");
 const { program } = require("commander");
 const fs = require("fs");
+const path = require("path");
 const process = require("process");
 program.version("0.1");
 
@@ -23,20 +24,83 @@ try {
     throw "An output file name must be specified!";
   }
   if (program.input && program.output) {
-    console.log("Path to input file is ", program.input);
     console.log("Name of output file is ", program.output);
-    //read file in the path given
-    fs.readFile(program.input, (err, data) => {
-      if (err) {
-        throw err;
+
+    // Get names of all files in directory
+    fs.readdir(
+      path.join(
+        __dirname,
+        "..",
+        "node_modules",
+        "uswds",
+        "src",
+        "components",
+        program.input
+      ),
+      { withFileTypes: true },
+      (err, files) => {
+        if (err) {
+          throw err;
+        }
+        console.log(files);
+
+        files.forEach((file) => {
+          // If a file in the directory ends in .njk
+          if (file.name.substring(file.name.lastIndexOf(".")) === ".njk") {
+            // Read file in the path given
+            fs.readFile(
+              path.join(
+                __dirname,
+                "..",
+                "node_modules",
+                "uswds",
+                "src",
+                "components",
+                program.input,
+                file.name
+              ),
+              (err, data) => {
+                if (err) {
+                  throw err;
+                }
+
+                // The name of the component is the name of the file
+                let componentName =
+                  // Uppercase the first letter of the file name
+                  file.name.charAt(0).toUpperCase() +
+                  // And then add the rest of the file name up until the '.'
+                  file.name.substring(1, file.name.lastIndexOf("."));
+
+                /**
+                 * PascalCase the component name if need be
+                 * If the name of the file includes a '-', store a substring starting from '-' up until the end of the file name
+                 */
+                if (componentName.includes("-")) {
+                  const sub = componentName.substring(
+                    componentName.lastIndexOf("-")
+                  );
+
+                  // Then uppercase the letter right after the '-' and add along the rest of the characters and store that in another variable
+                  const rpl = sub.charAt(1).toUpperCase() + sub.substring(2);
+                  console.log("sub is ", sub);
+                  console.log("rpl is ", rpl);
+
+                  // Then use the replace method to replace the string with the hyphen with the one without the hyphen and store it
+                  componentName = componentName.replace(sub, rpl);
+                }
+
+                const content = String(data);
+                genFile.generator(
+                  componentName,
+                  content,
+                  `${file.name.substring(0, file.name.lastIndexOf("."))}.jsx`
+                );
+              }
+            );
+          }
+        });
       }
-      //convert to string
-      data = data.toString();
-      //store component name
-      var componentName = data.substring(0, data.indexOf(" "));
-      var content = data.substring(data.indexOf(" ")); //store jsx content
-      genFile.generator(componentName, content, program.output + ".jsx"); //pass these to the generator function
-    });
+    );
   }
   if (!program.framework) {
     console.log("Specified framework is React");
