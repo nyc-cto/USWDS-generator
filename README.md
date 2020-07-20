@@ -15,7 +15,7 @@ This command line interface generates components of a particular framework (Reac
 
 ## Setting up the CLI
 
-1. Clone the repo onto your machine with this command: `git clone https://github.com/nyc-cto/USWDS-generator.git>` or if you want to specify your own repository name `git clone https://github.com/nyc-cto/USWDS-generator.git <repository name>`
+1. Clone the repo onto your machine with this command: `git clone https://github.com/nyc-cto/USWDS-generator.git` or if you want to specify your own repository name `git clone https://github.com/nyc-cto/USWDS-generator.git <repository name>`
 2. Change directory to the git repo: `cd USWDS-generator` or ``cd <repository name>`` if a different name was specified in the last step.
 3. Install any dependencies needed: `npm install`.
 4. Run `npm run uswds-gen -- -V` to check your version.
@@ -25,4 +25,8 @@ This command line interface generates components of a particular framework (Reac
 
 We have a script you can call with npm run, and as of NodeJS Version 2.0.0 it is possible to pass custom arguments into your script that you specified in _scripts_ in _package.json_ using **--** Below is an example of how you would pass args to the CLI:
 
-**Example call:** npm run uswds-gen -- -v -o outFileName -f Vue
+### Usage
+
+```shell
+npm run uswds-gen -- -v -o outFileName -f Vue
+```
