@@ -28,7 +28,7 @@
     "commander": "^5.1.0",
     "nunjucks": "^3.2.1",
     "react": "^16.13.1",
-    "uswds": "git+https://github.com/nyc-cto/uswds.git"
+    "uswds": "nyc-cto/uswds#master"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
