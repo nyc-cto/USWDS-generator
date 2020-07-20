@@ -8,7 +8,7 @@ This command line interface generates components of a particular framework (Reac
 | --- | --- | --- |
 | `-i <directory>` | `--input <directory>` | Specify the name of the folder that is used as input in the original USWDS project. This is optional and will point to ``uswds/src/components`` by default. If the option is specified, the CLI will handle whether the path specified is relative or absolute by using Node.js ``path.isAbsolute()`` and ``__dirname``. |
 | `-o` | `--output` | Specify the name of the output file. This command is from an earlier version of the CLI and is still not an optional command at the moment (considered **deprecated**). |
-| `-f` | `--framework` | Optional command to specify desired framework (will default to React if unspecified). Currently the framework we are working on is React. We will work on adding AngularJS/VueJS once ReactJS is as polished as possible. |
+| `-f <framework>` | `--framework <framework>` | Optional command to specify desired framework (will default to React if unspecified). Currently the framework we are working on is React. We will work on adding AngularJS/VueJS once ReactJS is as polished as possible. |
 | `-v` | `--verbose` | Optional command that will print the configuration of the CLI options passed in: <ul><li>framework</li><li>isAbsolutePath</li><li>inputDirectoryPath</li><li>isDefaultPathOveridden</li><li>verbose</li><li>cliUserInput</li><li>cliUserOutput</li></ul> |
 | `-h` | `--help` | Display helpful messages next to all available commands, kind of like this readme. :smirk: |
 | `-V` | `--version` | Display the version number. |
