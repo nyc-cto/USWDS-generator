@@ -1,4 +1,4 @@
-const OUTPUT_PATH = "react";
+//const OUTPUT_PATH = "react";
 
 const nunjucks = require("nunjucks");
 const fs = require("fs");
@@ -10,7 +10,7 @@ const path = require("path");
  * @param {String} content The content of the render return
  * @param {String} file The name of the output file (.jsx for React)
  */
-const generator = (componentName, content, file) => {
+const generator = (componentName, content, file, outputPath) => {
   // Check if any parameters are not of type string
   if (
     typeof componentName !== "string" ||
@@ -42,26 +42,19 @@ const generator = (componentName, content, file) => {
     .replace(/{% for/gm, "for (")
     .replace(/%}/gm, ") {");
 
-  //create framework directory
-  fs.mkdir(
-    path.join(__dirname, "..", OUTPUT_PATH),
-    { recursive: true },
-    (err) => {
-      if (err) throw err;
-    }
-  );
-
-  // Write the output file to the specified directory
-  fs.writeFile(
-    path.join(__dirname, "..", OUTPUT_PATH, file),
-    cleanResult,
-    (err) => {
-      if (err) {
-        return console.log(err);
-      }
-    }
-  );
+  //create framework directory if it doesn't exist
+  // if (!fs.existsSync(outputPath)) {
+  fs.mkdir(path.join(outputPath), { recursive: true }, (err) => {
+    if (err) throw err;
+  });
 };
+// Write the output file to the specified directory
+fs.writeFile(path.join(outputPath, file), cleanResult, (err) => {
+  if (err) {
+    return console.log(err);
+  }
+});
+//};
 
 // Example usage:
 // generator("Button", '<button type="submit">Alert</button>', "output.jsx");
