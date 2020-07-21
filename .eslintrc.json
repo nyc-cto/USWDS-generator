@@ -6,7 +6,10 @@
         "node": true
     },
     "extends": [
+        "airbnb",
+        "mocha",
         "eslint:recommended",
+        "plugin:mocha/recommended",
         "plugin:react/recommended"
     ],
     "parserOptions": {
@@ -17,7 +20,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "mocha"
     ],
     "rules": {
     },
