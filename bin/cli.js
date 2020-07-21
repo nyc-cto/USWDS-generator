@@ -20,12 +20,12 @@ program.parse(process.argv);
 
 const configuration = config.configureAndValidate(program);
 
-if (configuration.verbose) {
+if (configuration.isVerbose) {
   console.log(configuration);
 }
 
 try {
-  if (configuration.cliUserInput && configuration.cliUserOutput) {
+  if (configuration.cliUserOutput) {
     // Get names of all files in directory
     fs.readdir(
       configuration.inputDirectoryPath,
