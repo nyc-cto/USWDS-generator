@@ -17,10 +17,9 @@ const configure = (program) => {
   const framework = program.framework ? program.framework : "React";
 
   // Determine if the default path option (-i) is overriden using Boolean() cast (note: !!program.input provides the same result)
-  const isDefaultPathOverridden = Boolean(program.input);
+  const isDefaultInputPathOverridden = Boolean(program.input);
 
   let inputDirectoryPath;
-  let isAbsolutePath;
 
   /**
    * If no input option is provided, default to uswds components folder
@@ -36,25 +35,21 @@ const configure = (program) => {
       "src",
       "components"
     );
-    isAbsolutePath = false;
   } else {
     if (path.isAbsolute(program.input)) {
       // If the input path is absolute, use it without modification
       inputDirectoryPath = program.input;
-      isAbsolutePath = true;
     } else {
       // If the input path is relative, prepend the input with the gloval variable __dirname
       inputDirectoryPath = path.join(__dirname, program.input);
-      isAbsolutePath = false;
     }
   }
 
   // Store CLI options in a JSON Object and return
   return {
     framework,
-    isAbsolutePath,
     inputDirectoryPath,
-    isDefaultPathOverridden,
+    isDefaultInputPathOverridden,
     verbose: program.verbose,
     cliUserInput: program.input,
     cliUserOutput: program.output,
