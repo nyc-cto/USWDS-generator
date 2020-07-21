@@ -20,7 +20,7 @@ program.parse(process.argv);
 
 const configuration = config.configureAndValidate(program);
 
-if (configuration.verbose) {
+if (configuration.isVerbose) {
   console.log(configuration);
 }
 

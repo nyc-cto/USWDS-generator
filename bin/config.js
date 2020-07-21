@@ -50,7 +50,7 @@ const configure = (program) => {
     framework,
     inputDirectoryPath,
     isDefaultInputPathOverridden,
-    verbose: program.verbose,
+    isVerbose: program.verbose,
     cliUserInput: program.input,
     cliUserOutput: program.output,
   };
