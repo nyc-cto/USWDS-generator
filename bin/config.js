@@ -8,13 +8,14 @@ const configure = (program) => {
   // CLI Framework option defaults to React if not given
   let framework = program.framework ? program.framework : "react";
 
-  //make framework all lowercase letters
+  // Make framework all lowercase letters
   framework = framework.toLowerCase();
 
-  // Determine if the default path option (-i) is overriden using Boolean() cast (note: !!program.input provides the same result)
+  // Determine if the default path option (-i) is overriden using Boolean() cast
+  // (note: !!program.input provides the same result)
   const isDefaultInputPathOverridden = Boolean(program.input);
 
-  //Do the same for the output directory path
+  // Do the same for the output directory path
   const isDefaultOutputPathOverridden = Boolean(program.output);
 
   let inputDirectoryPath, outputDirectoryPath;

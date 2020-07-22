@@ -1,4 +1,4 @@
-//PLACE -- AFTER SCRIPT NAME FOR ARGUMENTS IF USING "npm run uswds-gen"
+// PLACE -- AFTER SCRIPT NAME FOR ARGUMENTS IF USING "npm run uswds-gen"
 
 const genFile = require("../src/generator");
 const { program } = require("commander");
