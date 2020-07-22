@@ -5,11 +5,7 @@
     "es2020": true,
     "node": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:mocha/recommended",
-    "plugin:react/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:mocha/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -17,7 +13,7 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["react", "mocha"],
+  "plugins": ["mocha"],
   "rules": {},
   "settings": {
     "react": {
