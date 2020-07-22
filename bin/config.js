@@ -1,9 +1,5 @@
 const path = require("path");
 
-function hasUpperCase(str) {
-  return str.toUpperCase() != str;
-}
-
 /**
  * Returns a JSON Object for CLI options
  * @param {Object} program
@@ -12,10 +8,8 @@ const configure = (program) => {
   // CLI Framework option defaults to React if not given
   let framework = program.framework ? program.framework : "react";
 
-  //if there are any uppercase letters in the framework make them all lowercase
-  if (hasUpperCase(framework)) {
-    framework = framework.toLowerCase();
-  }
+  //make framework all lowercase letters
+  framework = framework.toLowerCase();
 
   // Determine if the default path option (-i) is overriden using Boolean() cast (note: !!program.input provides the same result)
   const isDefaultInputPathOverridden = Boolean(program.input);
@@ -32,7 +26,8 @@ const configure = (program) => {
   if (!program.input) {
     // Default: Use dirname to point to the uswds components folder
     inputDirectoryPath = path.join(
-      process.cwd(),
+      __dirname,
+      "..",
       "node_modules",
       "uswds",
       "src",
@@ -50,7 +45,7 @@ const configure = (program) => {
 
   // If no output path is specified, it will default to dist/<whatever framework was specified, React by default>
   if (!program.output) {
-    outputDirectoryPath = path.join(process.cwd(), "dist", framework);
+    outputDirectoryPath = path.join(__dirname, "..", "dist", framework);
   } else {
     if (path.isAbsolute(program.output)) {
       // If output path is absolute, use it as is
