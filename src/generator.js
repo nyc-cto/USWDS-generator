@@ -1,5 +1,3 @@
-//const OUTPUT_PATH = "react";
-
 const nunjucks = require("nunjucks");
 const fs = require("fs");
 const path = require("path");
@@ -47,14 +45,14 @@ const generator = (componentName, content, file, outputPath) => {
   fs.mkdir(path.join(outputPath), { recursive: true }, (err) => {
     if (err) throw err;
   });
+
+  // Write the output file to the specified directory
+  fs.writeFile(path.join(outputPath, file), cleanResult, (err) => {
+    if (err) {
+      return console.log(err);
+    }
+  });
 };
-// Write the output file to the specified directory
-fs.writeFile(path.join(outputPath, file), cleanResult, (err) => {
-  if (err) {
-    return console.log(err);
-  }
-});
-//};
 
 // Example usage:
 // generator("Button", '<button type="submit">Alert</button>', "output.jsx");

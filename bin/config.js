@@ -18,6 +18,7 @@ const configure = (program) => {
 
   // Determine if the default path option (-i) is overriden using Boolean() cast (note: !!program.input provides the same result)
   const isDefaultInputPathOverridden = Boolean(program.input);
+
   //Do the same for the output directory path
   const isDefaultOutputPathOverridden = Boolean(program.output);
 
@@ -55,21 +56,19 @@ const configure = (program) => {
     }
   }
 
-  /**
-   * If no output path is specified, it will default to dist/<whatever framework was specified, React by default>
-   */
-
+  // If no output path is specified, it will default to dist/<whatever framework was specified, React by default>
   if (!program.output) {
     outputDirectoryPath = path.join(__dirname, "..", "dist", framework);
   } else {
     if (path.isAbsolute(program.output)) {
-      //If output path is absolute, use it as is
+      // If output path is absolute, use it as is
       outputDirectoryPath = program.output;
     } else {
-      //If the output path is relative, join it with the __dirname global variable
+      // If the output path is relative, join it with the __dirname global variable
       outputDirectoryPath = path.join(__dirname, "..", program.output);
     }
   }
+
   // Store CLI options in a JSON Object and return
   return {
     framework,
