@@ -19,11 +19,13 @@
     "sourceType": "module"
   },
   "plugins": ["react", "mocha"],
-  "rules": {},
+  "rules": {
+    "quotes": ["double", { "avoidEscape": true }],
+    "no-console": "off"
+  },
   "settings": {
     "react": {
       "version": "detect"
     }
-  },
-  "root": true
+  }
 }
