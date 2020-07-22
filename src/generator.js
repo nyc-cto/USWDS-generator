@@ -22,7 +22,7 @@ const generator = (componentName, content, file, outputPath) => {
   nunjucks.configure("templates");
   const res = nunjucks.render("react.njk", { componentName, content });
 
-  //Remove nunjucts santax in react component by chaining replace regular expressions
+  // Remove nunjucts santax in react component by chaining replace regular expressions
   const cleanResult = res
     // Clears all {%...end...%}
     .replace(/(\{%.end.*})|(\{%..end.*})/gm, "}")
@@ -40,9 +40,8 @@ const generator = (componentName, content, file, outputPath) => {
     .replace(/{% for/gm, "for (")
     .replace(/%}/gm, ") {");
 
-  //create framework directory if it doesn't exist
-  // if (!fs.existsSync(outputPath)) {
-  fs.mkdir(path.join(outputPath), { recursive: true }, (err) => {
+  // Create framework directory if it doesn't exist
+  fs.mkdirSync(path.join(outputPath), { recursive: true }, (err) => {
     if (err) throw err;
   });
 
