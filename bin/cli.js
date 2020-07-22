@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const process = require("process");
 const config = require("./config");
-program.version("0.1");
+program.version("0.2");
 
 program
   .option("-i, --input <path>", "specified path of input file")

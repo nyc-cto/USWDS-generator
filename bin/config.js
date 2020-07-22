@@ -1,12 +1,8 @@
 const path = require("path");
 
-// /**
-//  * Invokes the validation and configuration of the CLI options object
-//  * @param {Object} program
-//  */
-// const configureAndValidate = (program) => {
-//   return validate(configure(program));
-// };
+function hasUpperCase(str) {
+  return str.toUpperCase() != str;
+}
 
 /**
  * Returns a JSON Object for CLI options
@@ -14,7 +10,12 @@ const path = require("path");
  */
 const configure = (program) => {
   // CLI Framework option defaults to React if not given
-  const framework = program.framework ? program.framework : "react";
+  let framework = program.framework ? program.framework : "react";
+
+  //if there are any uppercase letters in the framework make them all lowercase
+  if (hasUpperCase(framework)) {
+    framework = framework.toLowerCase();
+  }
 
   // Determine if the default path option (-i) is overriden using Boolean() cast (note: !!program.input provides the same result)
   const isDefaultInputPathOverridden = Boolean(program.input);
@@ -31,8 +32,7 @@ const configure = (program) => {
   if (!program.input) {
     // Default: Use dirname to point to the uswds components folder
     inputDirectoryPath = path.join(
-      __dirname,
-      "..",
+      process.cwd(),
       "node_modules",
       "uswds",
       "src",
@@ -43,29 +43,21 @@ const configure = (program) => {
       // If the input path is absolute, use it without modification
       inputDirectoryPath = program.input;
     } else {
-      // If the input path is relative, prepend the input with the gloval variable __dirname
-      inputDirectoryPath = path.join(
-        __dirname,
-        "..",
-        "node_modules",
-        "uswds",
-        "src",
-        "components",
-        program.input
-      );
+      // If the input path is relative, prepend the input with process.cwd()
+      inputDirectoryPath = path.join(process.cwd(), program.input);
     }
   }
 
   // If no output path is specified, it will default to dist/<whatever framework was specified, React by default>
   if (!program.output) {
-    outputDirectoryPath = path.join(__dirname, "..", "dist", framework);
+    outputDirectoryPath = path.join(process.cwd(), "dist", framework);
   } else {
     if (path.isAbsolute(program.output)) {
       // If output path is absolute, use it as is
       outputDirectoryPath = program.output;
     } else {
-      // If the output path is relative, join it with the __dirname global variable
-      outputDirectoryPath = path.join(__dirname, "..", program.output);
+      // If the output path is relative, join it with process.cwd()
+      outputDirectoryPath = path.join(process.cwd(), program.output);
     }
   }
 
@@ -82,20 +74,6 @@ const configure = (program) => {
   };
 };
 
-// /**
-//  * Validates the object by checking if output is defined
-//  * @param {Object} configObject
-//  */
-// const validate = (configObject) => {
-//   if (!configObject.cliUserOutput) {
-//     throw "An output file name must be specified!";
-//   }
-
-//   return configObject;
-// };
-
 module.exports = {
-  // configureAndValidate,
-  // validate,
   configure,
 };
