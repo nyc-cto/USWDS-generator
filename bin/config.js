@@ -5,11 +5,8 @@ const path = require("path");
  * @param {Object} program
  */
 const configure = (program) => {
-  // CLI Framework option defaults to React if not given
-  let framework = program.framework ? program.framework : "react";
-
-  // Make framework all lowercase letters
-  framework = framework.toLowerCase();
+  // CLI Framework option defaults to React if not given, and lowercases it
+  const framework = program.framework ? program.framework.toLowerCase() : "react";
 
   // Determine if the default path option (-i) is overriden using Boolean() cast
   // (note: !!program.input provides the same result)
