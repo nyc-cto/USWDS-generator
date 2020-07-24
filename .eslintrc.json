@@ -15,7 +15,7 @@
   },
   "plugins": ["react"],
   "rules": {
-    "quotes": ["double", { "avoidEscape": true }],
+    "quotes": [1, "double", { "avoidEscape": true }],
     "no-console": "off"
   },
   "settings": {
