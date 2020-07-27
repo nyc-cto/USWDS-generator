@@ -3,12 +3,12 @@
 const fs = require("fs");
 const path = require("path");
 
-const getAllFiles = function (dirPath, arrayOfFiles, fileExtension) {
+const getAllFiles = (dirPath, arrayOfFiles, fileExtension) => {
   files = fs.readdirSync(dirPath);
 
   arrayOfFiles = arrayOfFiles || [];
 
-  files.forEach(function (file) {
+  files.forEach((file) => {
     // If the "file" is a directory, recurse through the sub-directory finding all the files within the sub-directory
     if (fs.statSync(dirPath + "/" + file).isDirectory()) {
       arrayOfFiles = getAllFiles(
@@ -19,7 +19,7 @@ const getAllFiles = function (dirPath, arrayOfFiles, fileExtension) {
     } else {
       // If it is a file, compare if the file extension matches the file format parameter. If so, push it to the array
       if (file.substring(file.lastIndexOf(".") + 1) === fileExtension) {
-        arrayOfFiles.push(path.join(__dirname, dirPath, "/", file));
+        arrayOfFiles.push(path.join(dirPath, "/", file));
       }
     }
   });
