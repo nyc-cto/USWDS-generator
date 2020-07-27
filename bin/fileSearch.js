@@ -9,17 +9,14 @@ const getAllFiles = (dirPath, arrayOfFiles, fileExtension) => {
   arrayOfFiles = arrayOfFiles || [];
 
   files.forEach((file) => {
+    const filePath = path.join(dirPath, "/", file);
     // If the "file" is a directory, recurse through the sub-directory finding all the files within the sub-directory
-    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-      arrayOfFiles = getAllFiles(
-        path.join(dirPath, "/", file),
-        arrayOfFiles,
-        fileExtension
-      );
+    if (fs.statSync(filePath).isDirectory()) {
+      arrayOfFiles = getAllFiles(filePath, arrayOfFiles, fileExtension);
     } else {
       // If it is a file, compare if the file extension matches the file format parameter. If so, push it to the array
       if (file.substring(file.lastIndexOf(".") + 1) === fileExtension) {
-        arrayOfFiles.push(path.join(dirPath, "/", file));
+        arrayOfFiles.push(filePath);
       }
     }
   });
