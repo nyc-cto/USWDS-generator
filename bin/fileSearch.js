@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const getAllFiles = (dirPath, arrayOfFiles, fileExtension) => {
-  files = fs.readdirSync(dirPath);
+  const files = fs.readdirSync(dirPath);
 
   arrayOfFiles = arrayOfFiles || [];
 
@@ -12,7 +12,7 @@ const getAllFiles = (dirPath, arrayOfFiles, fileExtension) => {
     // If the "file" is a directory, recurse through the sub-directory finding all the files within the sub-directory
     if (fs.statSync(dirPath + "/" + file).isDirectory()) {
       arrayOfFiles = getAllFiles(
-        dirPath + "/" + file,
+        path.join(dirPath, "/", file),
         arrayOfFiles,
         fileExtension
       );
