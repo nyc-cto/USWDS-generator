@@ -7,6 +7,7 @@ const path = require("path");
  * Find all files with a given file extension
  * @param {String} directoryPath The directory to search in
  * @param {String} fileExtension The file extension (e.g. ".njk")
+ * @returns {Array} An array of all files with a given file extension
  */
 const searchFiles = (directoryPath, fileExtension) => {
   // Recursive inner function that performs the search and appends to the array
