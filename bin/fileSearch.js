@@ -11,13 +11,13 @@ const path = require("path");
 const searchFiles = (directoryPath, fileExtension) => {
   // Recursive inner function that performs the search and appends to the array
   const getAllFiles = (directoryPath, arrayOfFiles = []) => {
-    const files = fs.readdirSync(dirPath);
+    const files = fs.readdirSync(directoryPath);
 
     files.forEach((file) => {
       const filePath = path.join(directoryPath, "/", file);
       // If the "file" is a directory, recurse through the sub-directory finding all the files within the sub-directory
       if (fs.statSync(filePath).isDirectory()) {
-        arrayOfFiles = getAllFiles(filePath, arrayOfFiles);
+        getAllFiles(filePath, arrayOfFiles);
       } else {
         // If it is a file, compare if the file extension matches the file format parameter. If so, push it to the array
         if (file.substring(file.lastIndexOf(".") + 1) === fileExtension) {
