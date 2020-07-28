@@ -5,7 +5,7 @@
     "es2020": true,
     "node": true
   },
-  "extends": ["airbnb", "eslint:recommended", "plugin:react/recommended"],
+  "extends": ["eslint:recommended", "plugin:mocha/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -13,7 +13,7 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["mocha"],
   "rules": {
     "quotes": [1, "double", { "avoidEscape": true }],
     "no-console": "off"
@@ -22,5 +22,6 @@
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "root": true
 }
