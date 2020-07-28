@@ -3,29 +3,37 @@
 const fs = require("fs");
 const path = require("path");
 
-const getAllFiles = (dirPath, arrayOfFiles, fileExtension) => {
-  const files = fs.readdirSync(dirPath);
+/**
+ * Find all files with a given file extension
+ * @param {String} directoryPath The directory to search in
+ * @param {String} fileExtension The file extension (e.g. ".njk")
+ */
+const searchFiles = (directoryPath, fileExtension) => {
+  // Recursive inner function that performs the search and appends to the array
+  const getAllFiles = (directoryPath, arrayOfFiles = []) => {
+    const files = fs.readdirSync(dirPath);
 
-  arrayOfFiles = arrayOfFiles || [];
-
-  files.forEach((file) => {
-    const filePath = path.join(dirPath, "/", file);
-    // If the "file" is a directory, recurse through the sub-directory finding all the files within the sub-directory
-    if (fs.statSync(filePath).isDirectory()) {
-      arrayOfFiles = getAllFiles(filePath, arrayOfFiles, fileExtension);
-    } else {
-      // If it is a file, compare if the file extension matches the file format parameter. If so, push it to the array
-      if (file.substring(file.lastIndexOf(".") + 1) === fileExtension) {
-        arrayOfFiles.push(filePath);
+    files.forEach((file) => {
+      const filePath = path.join(directoryPath, "/", file);
+      // If the "file" is a directory, recurse through the sub-directory finding all the files within the sub-directory
+      if (fs.statSync(filePath).isDirectory()) {
+        arrayOfFiles = getAllFiles(filePath, arrayOfFiles);
+      } else {
+        // If it is a file, compare if the file extension matches the file format parameter. If so, push it to the array
+        if (file.substring(file.lastIndexOf(".") + 1) === fileExtension) {
+          arrayOfFiles.push(filePath);
+        }
       }
-    }
-  });
+    });
 
-  return arrayOfFiles;
+    return arrayOfFiles;
+  };
+
+  return getAllFiles(directoryPath);
 };
 
 // Example usage
-const result = getAllFiles(
+const result = searchFiles(
   path.join(
     __dirname,
     "..",
@@ -35,11 +43,10 @@ const result = getAllFiles(
     "components",
     "07-form"
   ),
-  null,
   "njk"
 );
 console.log(result);
 
 module.exports = {
-  getAllFiles,
+  searchFiles,
 };
