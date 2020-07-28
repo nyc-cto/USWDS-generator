@@ -1,21 +1,22 @@
-const OUTPUT_PATH = "react";
-
 const nunjucks = require("nunjucks");
 const fs = require("fs");
 const path = require("path");
+const { type } = require("os");
 
 /**
  * Generates a nunjucks template based on given parameters - Note: runs from root directory
  * @param {String} componentName The name of the react component
  * @param {String} content The content of the render return
  * @param {String} file The name of the output file (.jsx for React)
+ * @param {String} outputPath The path where the output files will be created
  */
-const generator = (componentName, content, file) => {
+const generator = (componentName, content, file, outputPath) => {
   // Check if any parameters are not of type string
   if (
     typeof componentName !== "string" ||
     typeof content !== "string" ||
-    typeof file !== "string"
+    typeof file !== "string" ||
+    typeof outputPath !== "string"
   ) {
     throw "Error: All arguments must be of type string.";
   }
@@ -24,7 +25,7 @@ const generator = (componentName, content, file) => {
   nunjucks.configure("templates");
   const res = nunjucks.render("react.njk", { componentName, content });
 
-  //Remove nunjucts santax in react component by chaining replace regular expressions
+  // Remove nunjucts santax in react component by chaining replace regular expressions
   const cleanResult = res
     // Clears all {%...end...%}
     .replace(/(\{%.end.*})|(\{%..end.*})/gm, "}")
@@ -42,25 +43,17 @@ const generator = (componentName, content, file) => {
     .replace(/{% for/gm, "for (")
     .replace(/%}/gm, ") {");
 
-  //create framework directory
-  fs.mkdir(
-    path.join(__dirname, "..", OUTPUT_PATH),
-    { recursive: true },
-    (err) => {
-      if (err) throw err;
-    }
-  );
+  // Create framework directory if it doesn't exist
+  fs.mkdirSync(path.join(outputPath), { recursive: true }, (err) => {
+    if (err) throw err;
+  });
 
   // Write the output file to the specified directory
-  fs.writeFile(
-    path.join(__dirname, "..", OUTPUT_PATH, file),
-    cleanResult,
-    (err) => {
-      if (err) {
-        return console.log(err);
-      }
+  fs.writeFile(path.join(outputPath, file), cleanResult, (err) => {
+    if (err) {
+      return console.log(err);
     }
-  );
+  });
 };
 
 // Example usage:
