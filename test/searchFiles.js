@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const searchFiles = require("../src/searchFiles");
 const { expect } = require("chai");
-const { dir } = require("console");
 
 const directoryPath = path.join(__dirname, "temp");
 
@@ -28,12 +27,11 @@ describe("File Search", function () {
      *                 app.py
      */
 
-    // temp directory
+    // temp directory files and directories
     fs.mkdirSync(directoryPath, { recursive: true }, function (err) {
       if (err) throw err;
     });
 
-    // temp directory files and directories
     fs.writeFileSync(path.join(directoryPath, "words.txt"), "Words file", function (err) {
       if (err) throw err;
     });
@@ -197,16 +195,7 @@ describe("File Search", function () {
   });
 
   after(function (done) {
-    // fs.rmdirSync(directoryPath, { recursive: true });
+    fs.rmdirSync(directoryPath, { recursive: true });
     done();
   });
 });
-
-// const result = fileSearch.searchFiles(
-//   "njk",
-//   path.join(__dirname, "..", "node_modules", "uswds", "src", "components", "07-form"),
-//   path.join(__dirname, "..", "node_modules", "uswds", "src", "components", "08-navigation"),
-//   path.join(__dirname, "..", "node_modules", "uswds", "src", "components", "01-type"),
-//   path.join(__dirname, "..", "node_modules", "uswds", "src", "components", "breadcrumb")
-// );
-// console.log(result);
