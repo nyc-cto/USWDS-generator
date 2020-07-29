@@ -5,11 +5,11 @@ const path = require("path");
 
 /**
  * Find all files with a given file extension
- * @param {String} directoryPath The directory to search in
  * @param {String} fileExtension The file extension (e.g. ".njk")
+ * @param {String} directoryPath The directory to search in
  * @returns {Array} An array of all files with a given file extension
  */
-const searchFiles = (directoryPath, fileExtension) => {
+const searchFiles = (fileExtension, directoryPath) => {
   // Recursive inner function that performs the search and appends to the array
   const getAllFiles = (directoryPath, arrayOfFiles = []) => {
     const files = fs.readdirSync(directoryPath);
@@ -32,21 +32,6 @@ const searchFiles = (directoryPath, fileExtension) => {
 
   return getAllFiles(directoryPath);
 };
-
-// Example usage
-const result = searchFiles(
-  path.join(
-    __dirname,
-    "..",
-    "node_modules",
-    "uswds",
-    "src",
-    "components",
-    "07-form"
-  ),
-  "njk"
-);
-console.log(result);
 
 module.exports = {
   searchFiles,
