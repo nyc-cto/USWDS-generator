@@ -1,12 +1,20 @@
-const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
-const searchFiles = require("../src/searchFiles");
 const { expect } = require("chai");
+const searchFiles = require("../src/searchFiles");
+// const assert = require("assert");
 
 const directoryPath = path.join(__dirname, "temp");
 
-describe("File Search", function () {
+/**
+ * Returns a path prepended with `directoryPath`
+ * @param {...String} paths The array containing the path
+ */
+const testPath = (...paths) => {
+  return path.join(directoryPath, ...paths);
+};
+
+describe("searchFiles()", function () {
   before(function (done) {
     /**
      * File structure:
@@ -32,60 +40,50 @@ describe("File Search", function () {
       if (err) throw err;
     });
 
-    fs.writeFileSync(path.join(directoryPath, "words.txt"), "Words file", function (err) {
+    fs.writeFileSync(testPath("words.txt"), "Words file", function (err) {
       if (err) throw err;
     });
 
-    fs.writeFileSync(path.join(directoryPath, "blob.txt"), "Blob file", function (err) {
+    fs.writeFileSync(testPath("blob.txt"), "Blob file", function (err) {
       if (err) throw err;
     });
 
-    fs.writeFileSync(path.join(directoryPath, "javascript.js"), "JS file", function (err) {
+    fs.writeFileSync(testPath("javascript.js"), "JS file", function (err) {
       if (err) throw err;
     });
 
     // temp/empty directory files and directories
-    fs.mkdirSync(path.join(directoryPath, "emptyDir"), { recursive: true }, function (err) {
+    fs.mkdirSync(testPath("emptyDir"), { recursive: true }, function (err) {
       if (err) throw err;
     });
 
     // temp/innerDir directory files and directories
-    fs.mkdirSync(path.join(directoryPath, "innerDir"), { recursive: true }, function (err) {
+    fs.mkdirSync(testPath("innerDir"), { recursive: true }, function (err) {
       if (err) throw err;
     });
 
-    fs.writeFileSync(path.join(directoryPath, "innerDir", "inner.txt"), "Inner", function (err) {
+    fs.writeFileSync(testPath("innerDir", "inner.txt"), "Inner", function (err) {
       if (err) throw err;
     });
 
-    fs.writeFileSync(path.join(directoryPath, "innerDir", "inner.js"), "Inner", function (err) {
+    fs.writeFileSync(testPath("innerDir", "inner.js"), "Inner", function (err) {
       if (err) throw err;
     });
 
     // temp/innerDir/src/components files and directories
-    fs.mkdirSync(
-      path.join(directoryPath, "innerDir", "src", "components"),
-      { recursive: true },
-      function (err) {
-        if (err) throw err;
-      }
-    );
+    fs.mkdirSync(testPath("innerDir", "src", "components"), { recursive: true }, function (err) {
+      if (err) throw err;
+    });
 
-    fs.writeFileSync(
-      path.join(directoryPath, "innerDir", "src", "components", "app.py"),
-      "import math",
-      function (err) {
-        if (err) throw err;
-      }
-    );
+    fs.writeFileSync(testPath("innerDir", "src", "components", "app.py"), "import math", function (
+      err
+    ) {
+      if (err) throw err;
+    });
 
-    fs.writeFileSync(
-      path.join(directoryPath, "innerDir", "src", "init.py"),
-      "import sys",
-      function (err) {
-        if (err) throw err;
-      }
-    );
+    fs.writeFileSync(testPath("innerDir", "src", "init.py"), "import sys", function (err) {
+      if (err) throw err;
+    });
 
     done();
   });
@@ -93,63 +91,56 @@ describe("File Search", function () {
   describe("Should return the correct file paths in the `temp/` directory", function () {
     it("Should return 3 `temp/` file paths with the file extension `txt`", function (done) {
       // Create an array for the expected result
-      const expectedResult = [];
-      expectedResult.push(
-        path.join(directoryPath, "blob.txt"),
-        path.join(directoryPath, "innerDir", "inner.txt"),
-        path.join(directoryPath, "words.txt")
-      );
+      const expectedResult = [
+        testPath("blob.txt"),
+        testPath("innerDir", "inner.txt"),
+        testPath("words.txt"),
+      ];
 
       // Invoke the searchFiles function to test
       const result = searchFiles.searchFiles("txt", directoryPath);
 
       // Conduct a deep comparison to compare indices
-      expect(expectedResult).deep.to.equal(result);
+      expect(result).deep.to.equal(expectedResult);
       done();
     });
 
     it("Should return 2 `temp/` file paths with the file extension `js`", function (done) {
       // Create an array for the expected result
-      const expectedResult = [];
-      expectedResult.push(
-        path.join(directoryPath, "innerDir", "inner.js"),
-        path.join(directoryPath, "javascript.js")
-      );
+      const expectedResult = [testPath("innerDir", "inner.js"), testPath("javascript.js")];
 
       // Invoke the searchFiles function to test
       const result = searchFiles.searchFiles("js", directoryPath);
 
       // Conduct a deep comparison to compare indices
-      expect(expectedResult).deep.to.equal(result);
+      expect(result).deep.to.equal(expectedResult);
       done();
     });
 
     it("Should return 2 `temp/` file paths with the file extension `py`", function (done) {
       // Create an array for the expected result
-      const expectedResult = [];
-      expectedResult.push(
-        path.join(directoryPath, "innerDir", "src", "components", "app.py"),
-        path.join(directoryPath, "innerDir", "src", "init.py")
-      );
+      const expectedResult = [
+        testPath("innerDir", "src", "components", "app.py"),
+        testPath("innerDir", "src", "init.py"),
+      ];
 
       // Invoke the searchFiles function to test
       const result = searchFiles.searchFiles("py", directoryPath);
 
       // Conduct a deep comparison to compare indices
-      expect(expectedResult).deep.to.equal(result);
+      expect(result).deep.to.equal(expectedResult);
       done();
     });
 
     it("Should return 1 `temp/innerDir/` file path with the file extension `txt`", function (done) {
       // Create an array for the expected result
-      const expectedResult = [];
-      expectedResult.push(path.join(directoryPath, "innerDir", "inner.txt"));
+      const expectedResult = [testPath("innerDir", "inner.txt")];
 
       // Invoke the searchFiles function to test
-      const result = searchFiles.searchFiles("txt", path.join(directoryPath, "innerDir"));
+      const result = searchFiles.searchFiles("txt", testPath("innerDir"));
 
       // Conduct a deep comparison to compare indices
-      expect(expectedResult).deep.to.equal(result);
+      expect(result).deep.to.equal(expectedResult);
       done();
     });
 
@@ -158,26 +149,22 @@ describe("File Search", function () {
       const expectedResult = [];
 
       // Invoke the searchFiles function to test
-      const result = searchFiles.searchFiles("txt", path.join(directoryPath, "innerDir", "src"));
+      const result = searchFiles.searchFiles("txt", testPath("innerDir", "src"));
 
       // Conduct a deep comparison to compare indices
-      expect(expectedResult).deep.to.equal(result);
+      expect(result).deep.to.equal(expectedResult);
       done();
     });
 
     it("Should return 1 `temp/innerDir/src/components` file paths with the file extension `py`", function (done) {
       // Create an array for the expected result
-      const expectedResult = [];
-      expectedResult.push(path.join(directoryPath, "innerDir", "src", "components", "app.py"));
+      const expectedResult = [testPath("innerDir", "src", "components", "app.py")];
 
       // Invoke the searchFiles function to test
-      const result = searchFiles.searchFiles(
-        "py",
-        path.join(directoryPath, "innerDir", "src", "components")
-      );
+      const result = searchFiles.searchFiles("py", testPath("innerDir", "src", "components"));
 
       // Conduct a deep comparison to compare indices
-      expect(expectedResult).deep.to.equal(result);
+      expect(result).deep.to.equal(expectedResult);
       done();
     });
 
@@ -186,10 +173,10 @@ describe("File Search", function () {
       const expectedResult = [];
 
       // Invoke the searchFiles function to test
-      const result = searchFiles.searchFiles("cpp", path.join(directoryPath, "emptyDir"));
+      const result = searchFiles.searchFiles("cpp", testPath("emptyDir"));
 
       // Conduct a deep comparison to compare indices
-      expect(expectedResult).deep.to.equal(result);
+      expect(result).deep.to.equal(expectedResult);
       done();
     });
   });
