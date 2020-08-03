@@ -36,54 +36,26 @@ describe("searchFiles()", function () {
      */
 
     // temp directory files and directories
-    fs.mkdirSync(directoryPath, { recursive: true }, function (err) {
-      if (err) throw err;
-    });
+    fs.mkdirSync(directoryPath, { recursive: true });
 
-    fs.writeFileSync(testPath("words.txt"), "Words file", function (err) {
-      if (err) throw err;
-    });
-
-    fs.writeFileSync(testPath("blob.txt"), "Blob file", function (err) {
-      if (err) throw err;
-    });
-
-    fs.writeFileSync(testPath("javascript.js"), "JS file", function (err) {
-      if (err) throw err;
-    });
+    fs.writeFileSync(testPath("words.txt"), "Words file");
+    fs.writeFileSync(testPath("blob.txt"), "Blob file");
+    fs.writeFileSync(testPath("javascript.js"), "JS file");
 
     // temp/empty directory files and directories
-    fs.mkdirSync(testPath("emptyDir"), { recursive: true }, function (err) {
-      if (err) throw err;
-    });
+    fs.mkdirSync(testPath("emptyDir"), { recursive: true });
 
     // temp/innerDir directory files and directories
-    fs.mkdirSync(testPath("innerDir"), { recursive: true }, function (err) {
-      if (err) throw err;
-    });
+    fs.mkdirSync(testPath("innerDir"), { recursive: true });
 
-    fs.writeFileSync(testPath("innerDir", "inner.txt"), "Inner", function (err) {
-      if (err) throw err;
-    });
-
-    fs.writeFileSync(testPath("innerDir", "inner.js"), "Inner", function (err) {
-      if (err) throw err;
-    });
+    fs.writeFileSync(testPath("innerDir", "inner.txt"), "Inner");
+    fs.writeFileSync(testPath("innerDir", "inner.js"), "Inner");
 
     // temp/innerDir/src/components files and directories
-    fs.mkdirSync(testPath("innerDir", "src", "components"), { recursive: true }, function (err) {
-      if (err) throw err;
-    });
+    fs.mkdirSync(testPath("innerDir", "src", "components"), { recursive: true });
 
-    fs.writeFileSync(testPath("innerDir", "src", "components", "app.py"), "import math", function (
-      err
-    ) {
-      if (err) throw err;
-    });
-
-    fs.writeFileSync(testPath("innerDir", "src", "init.py"), "import sys", function (err) {
-      if (err) throw err;
-    });
+    fs.writeFileSync(testPath("innerDir", "src", "components", "app.py"), "import math");
+    fs.writeFileSync(testPath("innerDir", "src", "init.py"), "import sys");
 
     done();
   });
