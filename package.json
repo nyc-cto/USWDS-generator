@@ -9,7 +9,8 @@
   "scripts": {
     "test": "mocha",
     "uswds-gen": "node bin/cli.js",
-    "lint": "eslint . --ext .js --ext .jsx"
+    "lint": "eslint . --ext .js --ext .jsx",
+    "doc": "jsdoc -c jsdoc.config.json"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,7 @@
     "eslint-plugin-mocha": "^7.0.1",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
-    "mocha": "^8.0.1",
-    "nunjucks": "^3.2.1"
+    "jsdoc": "^3.6.5",
+    "mocha": "^8.0.1"
   }
 }
