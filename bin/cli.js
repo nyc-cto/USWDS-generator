@@ -15,7 +15,13 @@ program
   .option("-f, --framework <framework>", "specified framework (default is React)")
   .option("-v, --verbose", "verbose mode logs configuration");
 program.parse(process.argv);
-
+/**
+ * Configuration object
+ * @typedef {Object} configuration - object that contains returned properties from configure()
+ * @typedef {Function} configure - takes in program object and returns another object
+ * @returns {Object} - object with properties given by configure based off of what properties were undefined or not in program
+ * @param {Object} program - object passed in to configure input/output paths and framework specified
+ */
 const configuration = config.configure(program);
 
 if (configuration.isVerbose) {
@@ -62,8 +68,21 @@ try {
             // Finally, use replace() to update componentName that no longer contains the hypen
             componentName = componentName.replace(sub, rpl);
           }
-
+          /**
+           * Contents of the file
+           * @type {string}
+           */
           const content = String(data);
+          /**
+           * Generates component file in a specified framework
+           * @typedef {Function} generator
+           * @returns {void}
+           * @param {string} componentName - the name the component will have inside of the file
+           * @param {string} content - contents of the file that was read
+           * The third parameter is the what the actual name of the file will be,
+           * retrieved from the name of the file that has the basic HTML
+           * @param {string} configuration.outputDirectoryPath - path where component files will be created in the specified framework
+           */
           generator.generator(
             componentName,
             content,

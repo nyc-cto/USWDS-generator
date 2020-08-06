@@ -5,6 +5,8 @@ const { type } = require("os");
 
 /**
  * Generates a nunjucks template based on given parameters - Note: runs from root directory
+ * @typedef {Function} generator
+ * @returns {void}
  * @param {String} componentName The name of the react component
  * @param {String} content The content of the render return
  * @param {String} file The name of the output file (.jsx for React)
@@ -55,9 +57,6 @@ const generator = (componentName, content, file, outputPath) => {
     }
   });
 };
-
-// Example usage:
-// generator("Button", '<button type="submit">Alert</button>', "output.jsx");
 
 module.exports = {
   generator,
