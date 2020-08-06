@@ -2,7 +2,8 @@ const path = require("path");
 
 /**
  * Returns a JSON Object for CLI options
- * @param {Object} program
+ * @param {Object} program The program object given by the commander package
+ * @returns {Object} The normalized configuration object
  */
 const configure = (program) => {
   // CLI Framework option defaults to React if not given, and lowercases it
@@ -23,14 +24,7 @@ const configure = (program) => {
    */
   if (!program.input) {
     // Default: Use dirname to point to the uswds components folder
-    inputDirectoryPath = path.join(
-      __dirname,
-      "..",
-      "node_modules",
-      "uswds",
-      "src",
-      "components"
-    );
+    inputDirectoryPath = path.join(__dirname, "..", "node_modules", "uswds", "src", "components");
   } else {
     if (path.isAbsolute(program.input)) {
       // If the input path is absolute, use it without modification
