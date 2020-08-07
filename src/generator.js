@@ -1,16 +1,14 @@
 const nunjucks = require("nunjucks");
 const fs = require("fs");
 const path = require("path");
-const { type } = require("os");
 
 /**
  * Generates a nunjucks template based on given parameters - Note: runs from root directory
- * @typedef {Function} generator
- * @returns {void}
  * @param {String} componentName The name of the react component
  * @param {String} content The content of the render return
  * @param {String} file The name of the output file (.jsx for React)
  * @param {String} outputPath The path where the output files will be created
+ * @returns {void} void
  */
 const generator = (componentName, content, file, outputPath) => {
   // Check if any parameters are not of type string

@@ -1,9 +1,8 @@
 const path = require("path");
 
 /**
- * Returns a JSON Object for CLI options
+ * Recieves a program object and returns a JSON Object for CLI options
  * @param {Object} program The program object given by the commander package
- * @typedef {Function} configure - takes in program object and returns configuration object
  * @returns {Object} The normalized configuration object
  */
 const configure = (program) => {
@@ -16,11 +15,12 @@ const configure = (program) => {
 
   // Do the same for the output directory path
   const isDefaultOutputPathOverridden = Boolean(program.output);
-  /**
-   * @typedef {string} inputDirectoryPath
-   * @typedef {string} outputDirectoryPath
-   */
-  let inputDirectoryPath, outputDirectoryPath;
+
+  /** @type {string} */
+  let inputDirectoryPath;
+
+  /** @type {string} */
+  let outputDirectoryPath;
 
   /**
    * If no input option is provided, default to uswds components folder
@@ -52,7 +52,8 @@ const configure = (program) => {
     }
   }
 
-  /**  Store CLI options in a JSON Object and return
+  /**
+   * Store CLI options in a JSON Object and return
    * @property {string} framework - framework specified by user (will default to React)
    * @property {string} inputDirectoryPath - path where template HTML component files are looked for
    * @property {Boolean} isDefaultInputPathOverridden - true if the default input path isn't used, false otherwise
