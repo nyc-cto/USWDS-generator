@@ -10,7 +10,7 @@
   "recurseDepth": 10,
   "opts": {
     "encoding": "utf8",
-    "destination": "./docs/jsdoc",
+    "destination": "./docs/api",
     "recurse": true
   }
 }
