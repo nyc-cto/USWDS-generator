@@ -26,6 +26,8 @@
   },
   "homepage": "https://github.com/nyc-cto/USWDS-generator#readme",
   "dependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
     "chai": "^4.2.0",
     "commander": "^5.1.0",
     "nunjucks": "^3.2.1",
@@ -42,6 +44,6 @@
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
     "jsdoc": "^3.6.5",
-    "mocha": "^8.0.1"
+    "mocha": "^8.1.1"
   }
 }
