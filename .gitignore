@@ -3,3 +3,6 @@
 
 #Node Packages
 node_modules
+
+#JSDoc
+docs/api

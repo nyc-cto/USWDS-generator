@@ -63,7 +63,12 @@ try {
             componentName = componentName.replace(sub, rpl);
           }
 
+          /**
+           * Contents of the file
+           * @type {string}
+           */
           const content = String(data);
+
           generator.generator(
             componentName,
             content,

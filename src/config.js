@@ -1,8 +1,9 @@
 const path = require("path");
 
 /**
- * Returns a JSON Object for CLI options
- * @param {Object} program
+ * Recieves a program object and returns a JSON Object for CLI options
+ * @param {Object} program The program object given by the commander package
+ * @returns {Object} The normalized configuration object
  */
 const configure = (program) => {
   // CLI Framework option defaults to React if not given, and lowercases it
@@ -15,7 +16,11 @@ const configure = (program) => {
   // Do the same for the output directory path
   const isDefaultOutputPathOverridden = Boolean(program.output);
 
-  let inputDirectoryPath, outputDirectoryPath;
+  /** @type {string} */
+  let inputDirectoryPath;
+
+  /** @type {string} */
+  let outputDirectoryPath;
 
   /**
    * If no input option is provided, default to uswds components folder
@@ -23,14 +28,7 @@ const configure = (program) => {
    */
   if (!program.input) {
     // Default: Use dirname to point to the uswds components folder
-    inputDirectoryPath = path.join(
-      __dirname,
-      "..",
-      "node_modules",
-      "uswds",
-      "src",
-      "components"
-    );
+    inputDirectoryPath = path.join(__dirname, "..", "node_modules", "uswds", "src", "components");
   } else {
     if (path.isAbsolute(program.input)) {
       // If the input path is absolute, use it without modification
@@ -54,7 +52,17 @@ const configure = (program) => {
     }
   }
 
-  // Store CLI options in a JSON Object and return
+  /**
+   * Store CLI options in a JSON Object and return
+   * @property {string} framework - framework specified by user (will default to React)
+   * @property {string} inputDirectoryPath - path where template HTML component files are looked for
+   * @property {Boolean} isDefaultInputPathOverridden - true if the default input path isn't used, false otherwise
+   * @property {string} outputDirectoryPath - path where framework component files will be created
+   * @property {Boolean} isDefaultOutputPathOverridden - true if the default output path isn't used, false otherwise
+   * @property {Boolean} isVerbose - boolean to determine if the CLI should operate in verbose mode or not
+   * @property {string} cliUserInput - input path originally passed into the CLI from user
+   * @property {string} cliUserOutput - output path originally passed into the CLI from user
+   */
   return {
     framework,
     inputDirectoryPath,
