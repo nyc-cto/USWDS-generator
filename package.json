@@ -18,7 +18,9 @@
   },
   "authors": [
     "John Stendardo",
-    "Lamarr Baker"
+    "Lamarr Baker",
+    "Rabe Datta",
+    "Mathew Davidov"
   ],
   "license": "ISC",
   "bugs": {
@@ -28,6 +30,7 @@
   "dependencies": {
     "@babel/core": "^7.11.1",
     "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "@babel/types": "^7.11.0",
     "chai": "^4.2.0",
     "commander": "^5.1.0",
     "nunjucks": "^3.2.1",
