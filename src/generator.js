@@ -51,7 +51,7 @@ const generator = (componentName, content, file, outputPath) => {
   });
 
   // Replace "exports.(componentName) = function" with "function (componentName)"
-  cleanResult.code = cleanResult.code.replace(
+  const componentResult = cleanResult.code.replace(
     /exports\S+ = function /,
     `function ${componentName}`
   );
@@ -60,7 +60,7 @@ const generator = (componentName, content, file, outputPath) => {
   fs.mkdirSync(path.join(outputPath), { recursive: true });
 
   // Write the output file to the specified directory
-  fs.writeFileSync(path.join(outputPath, file), cleanResult.code);
+  fs.writeFileSync(path.join(outputPath, file), componentResult);
 };
 
 module.exports = {
