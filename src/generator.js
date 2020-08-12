@@ -2,6 +2,7 @@ const nunjucks = require("nunjucks");
 const fs = require("fs");
 const path = require("path");
 const babel = require("@babel/core");
+const t = require("@babel/types");
 
 /**
  * Generates a nunjucks template based on given parameters - Note: runs from root directory
@@ -38,6 +39,20 @@ const generator = (componentName, content, file, outputPath) => {
         return {
           visitor: {
             // "path" is already defined in the upper scope, use "ipath" as alias
+            AssignmentExpression(ipath) {
+              // look for exports.nameOFTheComponent in the file
+              if (
+                ipath.get("left").isMemberExpression() &&
+                ipath.get("left.object").isIdentifier({ name: "exports" }) &&
+                ipath.get("left.property").isIdentifier({ name: componentName })
+              ) {
+                // Replace "exports.NameOfTheComponent =" with "function nameOFTheComponent"
+                const func = ipath.get("right").node;
+                ipath.parentPath.replaceWith(
+                  t.functionDeclaration(t.identifier(componentName), func.params, func.body)
+                );
+              }
+            },
             Identifier(ipath) {
               // Replace all instances of "config" with "props"
               if (ipath.isIdentifier({ name: "config" })) {
@@ -50,17 +65,11 @@ const generator = (componentName, content, file, outputPath) => {
     ],
   });
 
-  // Replace "exports.(componentName) = function" with "function (componentName)"
-  const componentResult = cleanResult.code.replace(
-    /exports\S+ = function /,
-    `function ${componentName}`
-  );
-
   // Create framework directory if it doesn't exist
   fs.mkdirSync(path.join(outputPath), { recursive: true });
 
   // Write the output file to the specified directory
-  fs.writeFileSync(path.join(outputPath, file), componentResult);
+  fs.writeFileSync(path.join(outputPath, file), cleanResult.code);
 };
 
 module.exports = {
