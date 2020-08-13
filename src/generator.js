@@ -1,6 +1,8 @@
 const nunjucks = require("nunjucks");
 const fs = require("fs");
 const path = require("path");
+const babel = require("@babel/core");
+const t = require("@babel/types");
 
 /**
  * Generates a nunjucks template based on given parameters - Note: runs from root directory
@@ -18,42 +20,56 @@ const generator = (componentName, content, file, outputPath) => {
     typeof file !== "string" ||
     typeof outputPath !== "string"
   ) {
-    throw "Error: All arguments must be of type string.";
+    throw new Error("Error: All arguments must be of type string.");
   }
 
   // React template is located in ./templates
   nunjucks.configure("templates");
   const res = nunjucks.render("react.njk", { componentName, content });
 
-  // Remove nunjucts santax in react component by chaining replace regular expressions
-  const cleanResult = res
-    // Clears all {%...end...%}
-    .replace(/(\{%.end.*})|(\{%..end.*})/gm, "}")
-
-    // Capture {%...if( and replace with if(
-    .replace(/\{%.* if[^a-z]\(|\{%.* if[^a-z]|\{%\n..if/gm, "if (")
-
-    //clears ending of if tag ) %}
-    .replace(/\) %\}/gm, " ) {")
-
-    //clears nested if statement (only if (... and ...) right now)
-    .replace(/\) [^and].*%\}/gm, ") {")
-
-    // Nunjucks 'for' syntax cleanse
-    .replace(/{% for/gm, "for (")
-    .replace(/%}/gm, ") {");
+  /**
+   * Use @babel/core transformSync() and @babel/plugin-transform-react-jsx
+   * to transform components to pure JSX
+   * https://babeljs.io/docs/en/next/babel-core.html
+   * https://babeljs.io/docs/en/babel-plugin-transform-react-jsx/
+   */
+  const cleanResult = babel.transformSync(res, {
+    plugins: [
+      function transformJSX() {
+        return {
+          visitor: {
+            // "path" is already defined in the upper scope, use "ipath" as alias
+            AssignmentExpression(ipath) {
+              // look for exports.nameOFTheComponent in the file
+              if (
+                ipath.get("left").isMemberExpression() &&
+                ipath.get("left.object").isIdentifier({ name: "exports" }) &&
+                ipath.get("left.property").isIdentifier({ name: componentName })
+              ) {
+                // Replace "exports.NameOfTheComponent =" with "function nameOFTheComponent"
+                const func = ipath.get("right").node;
+                ipath.parentPath.replaceWith(
+                  t.functionDeclaration(t.identifier(componentName), func.params, func.body)
+                );
+              }
+            },
+            Identifier(ipath) {
+              // Replace all instances of "config" with "props"
+              if (ipath.isIdentifier({ name: "config" })) {
+                ipath.node.name = "props";
+              }
+            },
+          },
+        };
+      },
+    ],
+  });
 
   // Create framework directory if it doesn't exist
-  fs.mkdirSync(path.join(outputPath), { recursive: true }, (err) => {
-    if (err) throw err;
-  });
+  fs.mkdirSync(path.join(outputPath), { recursive: true });
 
   // Write the output file to the specified directory
-  fs.writeFile(path.join(outputPath, file), cleanResult, (err) => {
-    if (err) {
-      return console.log(err);
-    }
-  });
+  fs.writeFileSync(path.join(outputPath, file), cleanResult.code);
 };
 
 module.exports = {

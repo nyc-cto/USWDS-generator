@@ -32,7 +32,7 @@ try {
 
     files.forEach((file) => {
       // If a file in the directory ends in .njk
-      if (file.name.substring(file.name.lastIndexOf(".")) === ".njk") {
+      if (file.name.substring(file.name.lastIndexOf(".")) === ".jsx") {
         // Read file in the path given
         fs.readFile(path.join(configuration.inputDirectoryPath, file.name), (error, data) => {
           if (error) {
