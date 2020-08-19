@@ -39,7 +39,7 @@ const label = `exports.Label = function (config) {
 };`;
 
 describe("cli()", function () {
-  before(function (done) {
+  before(async function () {
     /**
      * File structure (before invoking any generator):
      * temp-cli
@@ -80,11 +80,23 @@ describe("cli()", function () {
     // temp-cli/example directory
     fs.mkdirSync(testPath("example"), { recursive: true });
 
-    done();
+    // temp-cli/docs directory
+    fs.mkdirSync(testPath("docs"), { recursive: true });
+
+    // temp-cli/docs files that are not `.jsx`
+    fs.writeFileSync(testPath(path.join("docs", "pull_request_template.md")), "# PR Template");
   });
 
   describe("Should not error and return the correct configuration and output", function () {
-    it("Should create two `.jsx` files in the `dist/vue` directory", function (done) {
+    it("Should create two `.jsx` files in the `dist/vue` directory from `src/`", async function () {
+      /**
+       * Creating directories and writing files take ~300-400ms.
+       * Mocha warns and provides a red warning for a slow test.
+       * However, our before() hook handles this and is intentional,
+       * therefore, we tell mocha this is okay using `this.slow()`
+       */
+      this.slow(500);
+
       const expectedFiles = ["Button.jsx", "Label.jsx"];
 
       const argv = [
@@ -97,7 +109,7 @@ describe("cli()", function () {
         "-f",
         "Vue",
       ];
-      cli(argv);
+      await cli(argv);
 
       fs.readdir(path.join(directoryPath, "dist", "vue"), { withFileTypes: true }, (err, files) => {
         if (err) {
@@ -109,11 +121,9 @@ describe("cli()", function () {
 
         expect(fileNames).deep.to.equal(expectedFiles);
       });
-
-      done();
     });
 
-    it("Should create two `.jsx` files in the `dist/react` directory with default framework", function (done) {
+    it("Should create two `.jsx` files in the `dist/react` directory with default framework from `src/`", async function () {
       const expectedFiles = ["Button.jsx", "Label.jsx"];
 
       const argv = [
@@ -124,7 +134,7 @@ describe("cli()", function () {
         "-o",
         path.join(directoryPath, "dist", "react"),
       ];
-      cli(argv);
+      await cli(argv);
 
       fs.readdir(
         path.join(directoryPath, "dist", "react"),
@@ -140,11 +150,9 @@ describe("cli()", function () {
           expect(fileNames).deep.to.equal(expectedFiles);
         }
       );
-
-      done();
     });
 
-    it("Should create zero `.jsx` files in the `dist/angular` directory", function (done) {
+    it("Should create zero `.jsx` files in the `dist/angular` directory from `example/`", async function () {
       const expectedFiles = [];
 
       const argv = [
@@ -157,7 +165,7 @@ describe("cli()", function () {
         "-f",
         "Angular",
       ];
-      cli(argv);
+      await cli(argv);
 
       fs.readdir(
         path.join(directoryPath, "dist", "angular"),
@@ -173,15 +181,43 @@ describe("cli()", function () {
           expect(fileNames).deep.to.equal(expectedFiles);
         }
       );
+    });
 
-      done();
+    it("Should create zero `.jsx` files in the `dist/angular` directory from `docs/`", async function () {
+      const expectedFiles = [];
+
+      const argv = [
+        "node",
+        path.join(__dirname, "..", "bin", "uswds-gen.js"),
+        "-i",
+        path.join(directoryPath, "docs"),
+        "-o",
+        path.join(directoryPath, "dist", "angular"),
+        "-f",
+        "Angular",
+      ];
+      await cli(argv);
+
+      fs.readdir(
+        path.join(directoryPath, "dist", "angular"),
+        { withFileTypes: true },
+        (err, files) => {
+          if (err) {
+            throw err;
+          }
+
+          const fileNames = [];
+          files.forEach((file) => fileNames.push(file.name));
+
+          expect(fileNames).deep.to.equal(expectedFiles);
+        }
+      );
     });
   });
 
-  after(function (done) {
-    fs.rmdir(directoryPath, { recursive: true }, (err) => {
+  after(async function () {
+    await fs.rmdir(directoryPath, { recursive: true }, (err) => {
       if (err) throw err;
     });
-    done();
   });
 });
