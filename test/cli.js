@@ -47,7 +47,10 @@ describe("cli()", function () {
      * │   ├───angular
      * │   ├───react
      * │   └───vue
+     * ├───docs
+     * │       pull_request_template.md
      * │
+     * ├───example
      * └───src
      *        Button.jsx
      *        Button.njk
