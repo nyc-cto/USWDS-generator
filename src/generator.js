@@ -43,13 +43,13 @@ const generator = (componentName, content, file, outputPath) => {
               // look for exports.nameOFTheComponent in the file
               if (
                 ipath.get("left").isMemberExpression() &&
-                ipath.get("left.object").isIdentifier({ name: "exports" }) &&
-                ipath.get("left.property").isIdentifier({ name: componentName })
+                ipath.get("left.object").isIdentifier({ name: "exports" })
               ) {
-                // Replace "exports.NameOfTheComponent =" with "function nameOFTheComponent"
                 const func = ipath.get("right").node;
+                const funcName = t.identifier(ipath.get("left.property").node.name);
+                // Replace "exports.NameOfTheComponent =" with "function nameOFTheComponent"
                 ipath.parentPath.replaceWith(
-                  t.functionDeclaration(t.identifier(componentName), func.params, func.body)
+                  t.functionDeclaration(funcName, func.params, func.body)
                 );
               }
             },
