@@ -4,6 +4,7 @@ const { program } = require("commander");
 
 const config = require("./config");
 const generator = require("./generator");
+const { searchFiles } = require("./searchFiles");
 
 /**
  * Process command line arguments and invoke configuration and generation
@@ -21,6 +22,7 @@ const cli = async (argv) => {
     .option("-i, --input <directory path>", "specified input directory path")
     .option("-o, --output <directory path>", "specified output directory path to be created")
     .option("-f, --framework <framework>", "specified framework (default is React)")
+    .option("-R, --no-recursive", "only generate files from current directory")
     .option("-v, --verbose", "verbose mode logs configuration");
   program.parse(argv);
 
@@ -31,35 +33,44 @@ const cli = async (argv) => {
   }
 
   try {
-    // Get names of all files in directory
-    const files = fs.readdirSync(configuration.inputDirectoryPath, { withFileTypes: true });
+    /**
+     * If the recursive option is passed in:
+     * Use searchFiles() to find all file paths recursively.
+     * Otherwise, use fs.readdirSync to find all files in root directory.
+     */
+    let files = [];
+    if (configuration.recursive) {
+      // Get file paths of all files in a directory with given file extension
+      files = searchFiles("jsx", configuration.inputDirectoryPath);
+    } else {
+      files = fs.readdirSync(configuration.inputDirectoryPath);
+    }
 
     files.forEach((file) => {
-      // If a file in the directory ends in .njk
-      if (file.name.substring(file.name.lastIndexOf(".")) === ".jsx") {
-        // Read file in the path given
-        const data = fs.readFileSync(path.join(configuration.inputDirectoryPath, file.name));
-
-        /**
-         * Contents of the file
-         * @type {string}
-         */
-        const content = String(data);
-
-        // Index of the component name is after "exports.", which is 8 characters
-        const componentIndex = content.indexOf("exports.") + 8;
-
-        // End index of the component name is the first instance of white space, e.g. "Button "
-        const componentEndIndex = content.indexOf(" ", componentIndex);
-        const componentName = content.substring(componentIndex, componentEndIndex);
-
-        generator.generator(
-          componentName,
-          content,
-          `${file.name.substring(0, file.name.lastIndexOf("."))}.jsx`,
-          configuration.outputDirectoryPath
-        );
+      let data;
+      if (configuration.recursive) {
+        data = fs.readFileSync(file);
+      } else if (!configuration.recursive && path.extname(file) === ".jsx") {
+        // If a file extension is "jsx", Read file in the path given
+        data = fs.readFileSync(path.join(configuration.inputDirectoryPath, file));
+      } else {
+        return;
       }
+
+      /**
+       * Contents of the file
+       * @type {string}
+       */
+      const content = String(data);
+
+      // Index of the component name is after "exports.", which is 8 characters
+      const componentIndex = content.indexOf("exports.") + 8;
+
+      // End index of the component name is the first instance of white space, e.g. "Button "
+      const componentEndIndex = content.indexOf(" ", componentIndex);
+      const componentName = content.substring(componentIndex, componentEndIndex);
+
+      generator.generator(componentName, content, path.basename(file), configuration);
     });
   } catch (e) {
     console.log(e);
