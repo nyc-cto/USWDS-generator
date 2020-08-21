@@ -1,6 +1,6 @@
 # USWDS-generator CLI
 
-This command line interface generates components of a particular framework (React by default, but Vue and Angular will be added).
+This command line interface generates components of a particular JavaScript framework (React by default, but Vue and Angular will be added). The CLI takes a directory as input and will read all the `.jsx` file extensions. Based on configurations given to the `npm run uswds-gen` script, the program will normalize all options and use babel (`@babel/core`) to create an Abstract Syntax Tree (AST) that will transform, parse, and generate components to the given framework.
 
 ## Commands
 
@@ -8,9 +8,10 @@ This command line interface generates components of a particular framework (Reac
 | --- | --- | --- |
 | `-i <directory>` | `--input <directory>` | Specify the name of the input directory. This is optional and will point to ``uswds/src/components`` by default. If the option is specified, the CLI will handle whether the path specified is relative or absolute by using Node.js ``path.isAbsolute()`` and ``__dirname``. |
 | `-o <directory>` | `--output <directory>` | Specify the name of the output directory. This is optional and will point to ``/dist/<framework>`` by default (react is the default if no framework is specified). If the option is specified, the CLI will handle whether the path specified is relative or absolute by using Node.js ``path.isAbsolute()`` and ``__dirname``. |
-| `-f <framework>` | `--framework <framework>` | Optional command to specify desired framework (will default to React if unspecified). Currently the framework we are working on is React. We will work on adding AngularJS/VueJS once ReactJS is as polished as possible. |
-| `-v` | `--verbose` | Optional command that will print the configuration of the CLI options passed in: <ul><li>framework</li><li>inputDirectoryPath</li><li>isDefaultInputPathOverridden</li><li>outputDirectoryPath</li><li>isDefaultOutputPathOverridden</li><li>isVerbose</li><li>cliUserInput</li><li>cliUserOutput</li></ul> |
-| `-h` | `--help` | Display helpful messages next to all available commands, kind of like this readme. :smirk: |
+| `-f <framework>` | `--framework <framework>` | Optional command to specify desired framework (will default to React if unspecified). Angular and Vue are to be added in the future. |
+| `-R` | `--no-resursive` | Optional command to disable recursive mode to search for files |
+| `-v` | `--verbose` | Optional command that will print the configuration of the CLI options passed in: <ul><li>`framework`</li><li>`inputDirectoryPath`</li><li>`isDefaultInputPathOverridden`</li><li>`outputDirectoryPath`</li><li>`isDefaultOutputPathOverridden`</li><li>`recursive`</li><li>`isVerbose`</li><li>`cliUserInput`</li><li>`cliUserOutput`</li></ul> |
+| `-h` | `--help` | Display helpful messages next to all available commands. |
 | `-V` | `--version` | Display the version number. |
 
 ## Setting up the CLI
@@ -23,10 +24,24 @@ This command line interface generates components of a particular framework (Reac
 
 ## Running the CLI
 
-We have a script you can call with npm run, and as of NodeJS Version 2.0.0 it is possible to pass custom arguments into your script that you specified in _scripts_ in _package.json_ using `--` before passing arguments. Below is an example of how you would pass args to the CLI:
+A script is specified with npm run: `npm run uswds-gen`. As of NodeJS Version 2.0.0 it is possible to pass custom arguments into a script that is specified in the `scripts` field in `package.json` using `--` before passing arguments. Below are examples of how one would pass args to the CLI:
 
 ### Usage
 
 ```shell
-npm run uswds-gen -- -v -o outFileName -f Vue
+# Script has defaults for every option:
+# The input will default to uswds src/components/, output to dist/react, and the framework is react
+npm run uswds-gen
+
+# Use relative input directory and no output or framework specified (default to react)
+npm run uswds-gen -- -i ./node_modules/uswds/src/components
+
+# Use relative input directory, relative output directory, and vue framework
+npm run uswds-gen -- -i ./src -o dist/vue -f vue
+
+# Use relative input directory, absolute output directory, angular framework, and print configuration
+npm run uswds-gen -- -i ./src -o C:/USWDS-generator/dist/angular -f angular -v
+
+# Use absolute path for input and output, react framework, and print configuration
+npm run uswds-gen -- -i C:/uswds/src/components -o C:/USWDS-generator/dist/react -f react -v
 ```
