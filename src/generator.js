@@ -9,16 +9,17 @@ const t = require("@babel/types");
  * @param {String} componentName The name of the react component
  * @param {String} content The content of the render return
  * @param {String} file The name of the output file (.jsx for React)
- * @param {String} outputPath The path where the output files will be created
+ * @param {Object} config The configuration object passed in from the CLI
+ * @property {String} config.outputDirectoryPath - The path where the output files will be created
+ * @property {String} config.framework           - The framework to be generated
  * @returns {void} void
  */
-const generator = (componentName, content, file, outputPath) => {
+const generator = (componentName, content, file, config) => {
   // Check if any parameters are not of type string
   if (
     typeof componentName !== "string" ||
     typeof content !== "string" ||
-    typeof file !== "string" ||
-    typeof outputPath !== "string"
+    typeof file !== "string"
   ) {
     throw new Error("Error: All arguments must be of type string.");
   }
@@ -66,10 +67,10 @@ const generator = (componentName, content, file, outputPath) => {
   });
 
   // Create framework directory if it doesn't exist
-  fs.mkdirSync(path.join(outputPath), { recursive: true });
+  fs.mkdirSync(path.join(config.outputDirectoryPath), { recursive: true });
 
   // Write the output file to the specified directory
-  fs.writeFileSync(path.join(outputPath, file), cleanResult.code);
+  fs.writeFileSync(path.join(config.outputDirectoryPath, file), cleanResult.code);
 };
 
 module.exports = {

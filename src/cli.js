@@ -4,6 +4,7 @@ const { program } = require("commander");
 
 const config = require("./config");
 const generator = require("./generator");
+const { searchFiles } = require("./searchFiles");
 
 /**
  * Process command line arguments and invoke configuration and generation
@@ -31,35 +32,26 @@ const cli = async (argv) => {
   }
 
   try {
-    // Get names of all files in directory
-    const files = fs.readdirSync(configuration.inputDirectoryPath, { withFileTypes: true });
+    // Get file paths of all files in a directory with given file extension
+    const files = searchFiles("jsx", configuration.inputDirectoryPath);
 
     files.forEach((file) => {
-      // If a file in the directory ends in .njk
-      if (file.name.substring(file.name.lastIndexOf(".")) === ".jsx") {
-        // Read file in the path given
-        const data = fs.readFileSync(path.join(configuration.inputDirectoryPath, file.name));
+      const data = fs.readFileSync(file);
 
-        /**
-         * Contents of the file
-         * @type {string}
-         */
-        const content = String(data);
+      /**
+       * Contents of the file
+       * @type {string}
+       */
+      const content = String(data);
 
-        // Index of the component name is after "exports.", which is 8 characters
-        const componentIndex = content.indexOf("exports.") + 8;
+      // Index of the component name is after "exports.", which is 8 characters
+      const componentIndex = content.indexOf("exports.") + 8;
 
-        // End index of the component name is the first instance of white space, e.g. "Button "
-        const componentEndIndex = content.indexOf(" ", componentIndex);
-        const componentName = content.substring(componentIndex, componentEndIndex);
+      // End index of the component name is the first instance of white space, e.g. "Button "
+      const componentEndIndex = content.indexOf(" ", componentIndex);
+      const componentName = content.substring(componentIndex, componentEndIndex);
 
-        generator.generator(
-          componentName,
-          content,
-          `${file.name.substring(0, file.name.lastIndexOf("."))}.jsx`,
-          configuration.outputDirectoryPath
-        );
-      }
+      generator.generator(componentName, content, path.basename(file), configuration);
     });
   } catch (e) {
     console.log(e);
