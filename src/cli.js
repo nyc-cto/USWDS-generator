@@ -22,6 +22,7 @@ const cli = async (argv) => {
     .option("-i, --input <directory path>", "specified input directory path")
     .option("-o, --output <directory path>", "specified output directory path to be created")
     .option("-f, --framework <framework>", "specified framework (default is React)")
+    .option("-R, --no-recursive", "only generate files from current directory")
     .option("-v, --verbose", "verbose mode logs configuration");
   program.parse(argv);
 
@@ -32,11 +33,29 @@ const cli = async (argv) => {
   }
 
   try {
-    // Get file paths of all files in a directory with given file extension
-    const files = searchFiles("jsx", configuration.inputDirectoryPath);
+    /**
+     * If the recursive option is passed in:
+     * Use searchFiles() to find all file paths recursively.
+     * Otherwise, use fs.readdirSync to find all files in root directory.
+     */
+    let files = [];
+    if (configuration.recursive) {
+      // Get file paths of all files in a directory with given file extension
+      files = searchFiles("jsx", configuration.inputDirectoryPath);
+    } else {
+      files = fs.readdirSync(configuration.inputDirectoryPath);
+    }
 
     files.forEach((file) => {
-      const data = fs.readFileSync(file);
+      let data;
+      if (configuration.recursive) {
+        data = fs.readFileSync(file);
+      } else if (!configuration.recursive && path.extname(file) === ".jsx") {
+        // If a file extension is "jsx", Read file in the path given
+        data = fs.readFileSync(path.join(configuration.inputDirectoryPath, file));
+      } else {
+        return;
+      }
 
       /**
        * Contents of the file

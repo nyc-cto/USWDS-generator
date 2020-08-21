@@ -59,6 +59,7 @@ const configure = (program) => {
    * @property {Boolean} isDefaultInputPathOverridden - true if the default input path isn't used, false otherwise
    * @property {string} outputDirectoryPath - path where framework component files will be created
    * @property {Boolean} isDefaultOutputPathOverridden - true if the default output path isn't used, false otherwise
+   * @property {Boolean} rescursive - Recursive read specified by user (default is true)
    * @property {Boolean} isVerbose - boolean to determine if the CLI should operate in verbose mode or not
    * @property {string} cliUserInput - input path originally passed into the CLI from user
    * @property {string} cliUserOutput - output path originally passed into the CLI from user
@@ -69,6 +70,7 @@ const configure = (program) => {
     isDefaultInputPathOverridden,
     outputDirectoryPath,
     isDefaultOutputPathOverridden,
+    recursive: program.recursive,
     isVerbose: program.verbose,
     cliUserInput: program.input,
     cliUserOutput: program.output,
