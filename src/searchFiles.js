@@ -3,9 +3,18 @@ const path = require("path");
 
 /**
  * Find all files with a given file extension and directory (or directories)
- * @param {String} fileExtension The file extension (e.g. ".njk")
+ * @param {String} fileExtension The file extension (e.g. "njk" or "jsx") - no period/dot
  * @param {...String} directoryPaths The directory (or directories) to search in
- * @returns {String[]} An array of all files with a given file extension
+ * @example
+ *   // Single directory usage
+ *   const filePaths = searchFiles("js", "./src");
+ * @example
+ *   // Multiple directory usage
+ *   const filePaths = searchFiles("js", "./src", "./test");
+ * @example
+ *   // Multiple directory usage
+ *   const filePaths = searchFiles("jsx", "./src/components", "./src/store", "./src/app");
+ * @returns {String[]} An array of all file paths with a given file extension
  */
 const searchFiles = (fileExtension, ...directoryPaths) => {
   // Recursive inner function that performs the search and appends to the array
@@ -25,7 +34,7 @@ const searchFiles = (fileExtension, ...directoryPaths) => {
        */
       if (fs.statSync(filePath).isDirectory()) {
         getAllFiles(filePath, arrayOfFiles);
-      } else if (file.substring(file.lastIndexOf(".") + 1) === fileExtension) {
+      } else if (path.extname(file) === `.${fileExtension}`) {
         arrayOfFiles.push(filePath);
       }
     });

@@ -1,8 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
+
 const searchFiles = require("../src/searchFiles");
-// const assert = require("assert");
 
 const directoryPath = path.join(__dirname, "temp");
 
