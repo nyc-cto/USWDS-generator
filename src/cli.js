@@ -14,7 +14,7 @@ const generator = require("./generator");
  *   npm run uswds-gen -- -i ./src -o dist/angular -f angular -v
  * @returns {void} void
  */
-const cli = (argv) => {
+const cli = async (argv) => {
   program.version("0.2");
 
   program
@@ -32,60 +32,34 @@ const cli = (argv) => {
 
   try {
     // Get names of all files in directory
-    fs.readdir(configuration.inputDirectoryPath, { withFileTypes: true }, (err, files) => {
-      if (err) {
-        throw err;
+    const files = fs.readdirSync(configuration.inputDirectoryPath, { withFileTypes: true });
+
+    files.forEach((file) => {
+      // If a file in the directory ends in .njk
+      if (file.name.substring(file.name.lastIndexOf(".")) === ".jsx") {
+        // Read file in the path given
+        const data = fs.readFileSync(path.join(configuration.inputDirectoryPath, file.name));
+
+        /**
+         * Contents of the file
+         * @type {string}
+         */
+        const content = String(data);
+
+        // Index of the component name is after "exports.", which is 8 characters
+        const componentIndex = content.indexOf("exports.") + 8;
+
+        // End index of the component name is the first instance of white space, e.g. "Button "
+        const componentEndIndex = content.indexOf(" ", componentIndex);
+        const componentName = content.substring(componentIndex, componentEndIndex);
+
+        generator.generator(
+          componentName,
+          content,
+          `${file.name.substring(0, file.name.lastIndexOf("."))}.jsx`,
+          configuration.outputDirectoryPath
+        );
       }
-      console.log(files);
-
-      files.forEach((file) => {
-        // If a file in the directory ends in .njk
-        if (file.name.substring(file.name.lastIndexOf(".")) === ".jsx") {
-          // Read file in the path given
-          fs.readFile(path.join(configuration.inputDirectoryPath, file.name), (error, data) => {
-            if (error) {
-              throw error;
-            }
-
-            // The name of the component is the name of the file
-            let componentName =
-              // Uppercase the first letter of the file name
-              file.name.charAt(0).toUpperCase() +
-              // And then add the rest of the file name up until the '.'
-              file.name.substring(1, file.name.lastIndexOf("."));
-
-            /**
-             * PascalCase the component name if need be
-             * If the name of the file includes a '-',
-             * store a substring starting from '-' up until the end of the file name
-             */
-            if (componentName.includes("-")) {
-              const sub = componentName.substring(componentName.lastIndexOf("-"));
-
-              // Then, uppercase the letter right after the `-` and append the rest of characters
-              const rpl = sub.charAt(1).toUpperCase() + sub.substring(2);
-              console.log("sub is ", sub);
-              console.log("rpl is ", rpl);
-
-              // Finally, use replace() to update componentName that no longer contains the hypen
-              componentName = componentName.replace(sub, rpl);
-            }
-
-            /**
-             * Contents of the file
-             * @type {string}
-             */
-            const content = String(data);
-
-            generator.generator(
-              componentName,
-              content,
-              `${file.name.substring(0, file.name.lastIndexOf("."))}.jsx`,
-              configuration.outputDirectoryPath
-            );
-          });
-        }
-      });
     });
   } catch (e) {
     console.log(e);
