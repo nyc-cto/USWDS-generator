@@ -2,6 +2,24 @@
 
 This command line interface generates components of a particular JavaScript framework (React by default, but Vue and Angular will be added). The CLI takes a directory as input and will read all the `.jsx` file extensions. Based on configurations given to the `npm run uswds-gen` script, the program will normalize all options and use babel (`@babel/core`) to create an Abstract Syntax Tree (AST) that will transform, parse, and generate components to the given framework.
 
+## Background and Objectives
+
+This project was started as a summer intern project in 2020 in partnership with [MLH Fellows](https://fellowship.mlh.io/) to see if it was possible to auto-generate presentational components from the [US Web Design System](https://designsystem.digital.gov/) in different front-end frameworks.
+
+The objective is to produce uncontrolled stateless functional components initially in React, automatically generated from generic templates that can be maintained by non-javascript developers and which are generic enough that they can power the generation of components for multiple frameworks.
+
+## Contributors and Thanks
+
+The Mayor's Office of the CTO would like to give special thanks to the Fellows team who did the initial work to explore, define, and architect this project:
+
+Lamarr Baker [(Lamarr20)](https://github.com/Lamarr20)
+Wilson Chan [(WackyChomp)](https://github.com/WackyChomp)
+Rabe Datta [(RabeDatta)](https://github.com/RabeDatta)
+Matthew Davidov [(MathewDavidov)](https://github.com/MathewDavidov)
+John Stendardo [(JohnAKASquib)](https://github.com/JohnAKASquib)
+
+And to Chris Ewald [(mkcode)](https://github.com/mkcode) for his mentorship of the Fellows
+
 ## Commands
 
 | Command | Full Command | Description |
