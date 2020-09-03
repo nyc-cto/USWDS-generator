@@ -12,11 +12,11 @@ The objective is to produce uncontrolled stateless functional components initial
 
 The Mayor's Office of the CTO would like to give special thanks to the Fellows team who did the initial work to explore, define, and architect this project:
 
-Lamarr Baker [(Lamarr20)](https://github.com/Lamarr20)
-Wilson Chan [(WackyChomp)](https://github.com/WackyChomp)
-Rabe Datta [(RabeDatta)](https://github.com/RabeDatta)
-Matthew Davidov [(MathewDavidov)](https://github.com/MathewDavidov)
-John Stendardo [(JohnAKASquib)](https://github.com/JohnAKASquib)
+- Lamarr Baker [(Lamarr20)](https://github.com/Lamarr20)
+- Wilson Chan [(WackyChomp)](https://github.com/WackyChomp)
+- Rabe Datta [(RabeDatta)](https://github.com/RabeDatta)
+- Matthew Davidov [(MathewDavidov)](https://github.com/MathewDavidov)
+- John Stendardo [(JohnAKASquib)](https://github.com/JohnAKASquib)
 
 And to Chris Ewald [(mkcode)](https://github.com/mkcode) for his mentorship of the Fellows
 
